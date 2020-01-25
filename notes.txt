@@ -13,4 +13,4 @@ C:\Users\Lucas\Desktop\Developer\Python\twitclone>python manage.py startapp twit
 run this command to create a new app within the django framework
 
 under the twitclone directory:
-views.py -> like app.py in flask.
+views.py -> like app.py in flask. determines what user sees  when they go to certain routes
