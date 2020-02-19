@@ -11,12 +11,12 @@ def index(request):
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
     
     context = {"user": request.user, "tweets": Tweet.objects.all(), }
-    return render(request, "index.html", context)
+    return render(request, "profile.html", context)
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         
@@ -37,7 +37,7 @@ def logout_view(request):
     
 def register(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm = request.POST.get("confirm")
@@ -58,6 +58,13 @@ def register(request):
             return render(request, "register.html", {"message": "Passwords don't match"})
     else:
         return render(request, "register.html")
+    
+    
+def render_profile(request, profile_name):
+    profile_string = profile_name
+    tweets = Tweet.objects.all() #TODO select only from profile name
+    return render(request, "profile.html", {"message": profile_string, "tweets":tweets})
+
 
 def render_integer(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
