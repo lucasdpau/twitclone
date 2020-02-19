@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>
-            Hello World!
+            Hello {{ user }}!
         </h1>
         <ul>
             {% for tweet in tweets %}
@@ -17,16 +17,13 @@
         </ul>
         <div>
             <div>
-                Login Here!
+                <a href="{% url 'login' %}">Login here!</a>
             </div>
             <div>
-                <form id="login_form">
-                    Username<input type="text" id="username">
-                    Password<input type="password" id="password">
-                </form>
+                <a href="{% url 'register' %}">Register here!</a>
             </div>
             <div>
-                <a href="/register">Register here!</a>
+                <a href="{% url 'logout' %}">Logout</a>
             </div>
             
         </div>

@@ -29,3 +29,14 @@ python manage.py shell
 go into admin.py and register the models with the built in admin site.
 then use the command python manage.py createsuperuser to create an administrator.
 login at website/admin to be able to adjust all the databases
+
+
+Django uses builtin user login/registration.
+open the shell with python manage.py shell
+then:
+>>> from django.contrib.auth.models import User
+>>> user = User.objects.create_user("LP", "lp@gmail.com", "lp123")
+>>> user
+<User: LP>
+>>> user.first_name = "luke"
+>>> user.save()
