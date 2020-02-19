@@ -15,3 +15,17 @@ run this command to create a new app within the django framework
 
 under the twitclone-app1 directory:
 views.py -> like app.py in flask. determines what user sees  when they go to certain routes
+
+
+For databases, to manage the scheme use this cmd after editting models.py:
+python manage.py makemigrations 
+python manage.py migrate
+
+
+you can edit database using the django shell. enter this into cmd:
+python manage.py shell
+
+
+go into admin.py and register the models with the built in admin site.
+then use the command python manage.py createsuperuser to create an administrator.
+login at website/admin to be able to adjust all the databases
