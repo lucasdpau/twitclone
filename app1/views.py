@@ -10,5 +10,8 @@ def index(request):
     return render(request, "index.html", context) #renders from the templates folder in the app folder
 
 
+def register(request):
+    return HttpResponse("Register Here!")
+
 def textresponse(request):
     return HttpResponse("Oh hello")
