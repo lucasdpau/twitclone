@@ -3,14 +3,15 @@ created by going to cmd and
 django-admin startproject djangosite
 
 
-
 __init__.py -> tells us that the djangosite directory is a python package
 manage.py -> a python script than can perfrom useful operations on your web app as you're working on it
 settings.py -> has all the settings for the app
 urls.py -> file that determines the routes the user goes to for each url
+asgi.py: An entry-point for ASGI-compatible web servers to serve your project. 
+wsgi.py: An entry-point for WSGI-compatible web servers to serve your project.
 
 C:\Users\Lucas\Desktop\Developer\Python\twitclone>python manage.py startapp twitclone
 run this command to create a new app within the django framework
 
-under the twitclone directory:
+under the twitclone-app1 directory:
 views.py -> like app.py in flask. determines what user sees  when they go to certain routes
