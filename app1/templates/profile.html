@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <title>Profile</title>
 
     </head>
     <body>
         <div>
             <h1>
-                Hello {{ user }}!
+                Hello {{ users }}!
             </h1>
             <ul>
                 {% for tweet in tweets %}
@@ -16,6 +16,16 @@
                 </li>
                 {% endfor %}
             </ul>
+            <br>
+            {{message}}
+        </div>
+        <div>
+            <form action="/profile/{current_username}" method="POST">
+                {% csrf_token %} 
+                Enter your tweet here! (Max 140 chars)
+                <input type="text" name="tweet">
+                <input type="submit" value="TWEET">
+            </form>
         </div>
         <div>
             <div>

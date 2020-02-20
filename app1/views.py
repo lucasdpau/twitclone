@@ -11,7 +11,8 @@ def index(request):
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
     
     context = {"user": request.user, "tweets": Tweet.objects.all(), }
-    return render(request, "profile.html", context)
+    authenticated_username = request.user.username
+    return HttpResponseRedirect("profile/" + authenticated_username)
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made
@@ -51,6 +52,7 @@ def register(request):
             return render(request, "register.html", {"message": "Please confirm the password"})
         
         if password == confirm:
+            #TODO avoid duplicate usernames
             user = User.objects.create_user(username, email, password)
             user.save()
             return render(request, "login.html")
@@ -60,12 +62,18 @@ def register(request):
         return render(request, "register.html")
     
     
-def render_profile(request, profile_name):
+def profile_view(request, profile_name):
+    if request.method == "POST":
+        tweet_text = request.POST.get("tweet")
+        new_tweet = Tweet(text=tweet_text, author=request.user)
+        new_tweet.save()
     profile_string = profile_name
-    tweets = Tweet.objects.all() #TODO select only from profile name
-    return render(request, "profile.html", {"message": profile_string, "tweets":tweets})
+    current_username = request.user.username
+    users = User.objects.filter(username="lucas")
+    tweets = Tweet.objects.all()
+    return render(request, "profile.html", {"message": profile_string, "tweets":tweets, "users":users, "current_username":current_username})
 
 
-def render_integer(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
+def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
     return HttpResponse(return_string) #this loads a webpage that only contains the int entered in the url
