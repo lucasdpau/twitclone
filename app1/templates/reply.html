@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Profile</title>
+        <title>Reply</title>
 
     </head>
     <body>
@@ -9,26 +9,18 @@
             <h1>
                 Hello {{ users }}!
             </h1>
-            <ul>
-                {% for tweet in tweets %}
-                <li>
-                    {{ tweet }} <a href="/reply/{{tweet.id}}">Reply!</a>
-                </li>
-                {% endfor %}
-            </ul>
-            <br>
-            {{message}}
         </div>
         <div>
-            <form action="/profile/{{current_username}}" method="POST">
+            <form action="/reply/{{tweet_id}}" method="POST">
                 {% csrf_token %} 
-                Enter your tweet here! (Max 140 chars)
+                Enter your reply here! (Max 140 chars)
                 <input type="text" name="tweet">
                 <input type="submit" value="TWEET">
             </form>
         </div>
         <div>
             <div>
+                <a href="/">Back</a>
                 <a href="{% url 'logout' %}">Logout</a>
             </div>   
         </div>

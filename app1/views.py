@@ -63,17 +63,28 @@ def register(request):
     
     
 def profile_view(request, profile_name):
-    if request.method == "POST":
+    if request.method == "POST":  #if a form has been submitted then we add it to the database
         tweet_text = request.POST.get("tweet")
-        new_tweet = Tweet(text=tweet_text, author=request.user)
-        new_tweet.save()
+        if len(tweet_text) <= 140:
+            new_tweet = Tweet(text=tweet_text, author=request.user)
+            new_tweet.save()
     profile_string = profile_name
     current_username = request.user.username
     users = User.objects.filter(username="lucas")
-    tweets = Tweet.objects.all()
+    tweets = Tweet.objects.all() #for now we will just list all 'tweets' on the profile page
     return render(request, "profile.html", {"message": profile_string, "tweets":tweets, "users":users, "current_username":current_username})
 
+def reply_view(request, tweet_id):
+    parent = tweet_id
+    if request.method == "POST":
+        tweet_text = request.POST.get("tweet")
+        if len(tweet_text) <= 140:
+            new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
+            new_tweet.save()
+            return HttpResponseRedirect(reverse("index"))
+    
+    return render(request, "reply.html", {"tweet_id": parent})
 
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
-    return HttpResponse(return_string) #this loads a webpage that only contains the int entered in the url
+    return render(request, "tweet.html", {}) #this loads a webpage that only contains the int entered in the url
