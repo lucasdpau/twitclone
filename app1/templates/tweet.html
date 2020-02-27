@@ -11,6 +11,15 @@
         <div>
             by: {{tweet_author}}
         </div>
-        at: {{tweet_datetime}}
+        <p>>at: {{tweet_datetime}}</p>
+        <div>
+            {% for child in child_tweets%}
+            <li>
+                <ul>
+                    {{child}}
+                </ul>
+            </li>
+            {% endfor %}
+        </div>
     </body>
 </html>

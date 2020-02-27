@@ -72,7 +72,7 @@ def profile_view(request, profile_name):
     profile_name_string = profile_name
     current_username = request.user.username
     users = User.objects.filter(username="lucas")
-    tweets = Tweet.objects.filter(author__username=profile_string)
+    tweets = Tweet.objects.filter(author__username=profile_name_string)
     return render(request, "profile.html", {"message": profile_name_string, "tweets":tweets, "users":users, "current_username":current_username})
 
 def reply_view(request, tweet_id):
@@ -91,4 +91,6 @@ def reply_view(request, tweet_id):
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
-    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime}) #this loads a webpage that only contains the int entered in the url
+    #get all tweets with parent tweet of this tweet.
+    child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)    
+    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime, "child_tweets": child_tweets}) #this loads a webpage that only contains the int entered in the url
