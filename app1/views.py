@@ -91,6 +91,8 @@ def reply_view(request, tweet_id):
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
-    #get all tweets with parent tweet of this tweet.
-    child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)    
-    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime, "child_tweets": child_tweets}) #this loads a webpage that only contains the int entered in the url
+    parent_tweet = Tweet.objects.filter(id=tweet.parent_tweet)
+    #get all tweets who have their parent tweet as this tweet.
+    child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   
+    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime, 
+                                          "child_tweets": child_tweets, "parent_tweet": parent_tweet}) #this loads a webpage that only contains the int entered in the url

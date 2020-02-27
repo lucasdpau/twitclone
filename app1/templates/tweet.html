@@ -6,6 +6,11 @@
     </head>
     <body>
         <div>
+            {%for parent in parent_tweet%}
+                {{parent}}
+            {%endfor%}
+        </div>
+        <div>
             {{tweet_text}}
         </div>
         <div>
@@ -16,7 +21,8 @@
             {% for child in child_tweets%}
             <li>
                 <ul>
-                    {{child}}
+                    <a href="../tweets/{{child.id}}">{{child}}</a>
+                    <a href="../reply/{{child.id}}">Reply!</a>
                 </ul>
             </li>
             {% endfor %}
