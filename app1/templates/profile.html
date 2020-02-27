@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Profile</title>
+        <title>Profile for </title>
 
     </head>
     <body>
@@ -22,7 +22,7 @@
         <div>
             <form action="/profile/{{current_username}}" method="POST">
                 {% csrf_token %} 
-                Enter your tweet here! (Max 140 chars)
+                Enter a new tweet here! (Max 140 chars)
                 <input type="text" name="tweet">
                 <input type="submit" value="TWEET">
             </form>
@@ -30,7 +30,8 @@
         <div>
             <div>
                 <a href="{% url 'logout' %}">Logout</a>
-            </div>   
+                <a href="{% url 'index' %}">Home</a>
+            </div>
         </div>
     </body>
 </html>

@@ -9,10 +9,11 @@ from .models import Tweet
 def index(request):
     if not request.user.is_authenticated:
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
-    
-    context = {"user": request.user, "tweets": Tweet.objects.all(), }
+    current_username = request.user.username
+    users = User.objects.filter(username="lucas")    
+    context = {"tweets": Tweet.objects.all(), "users":users, "current_username":current_username}
     authenticated_username = request.user.username
-    return HttpResponseRedirect("profile/" + authenticated_username)
+    return render(request, "index.html", context)
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made
@@ -71,11 +72,13 @@ def profile_view(request, profile_name):
     profile_string = profile_name
     current_username = request.user.username
     users = User.objects.filter(username="lucas")
-    tweets = Tweet.objects.all() #for now we will just list all 'tweets' on the profile page
+    tweets = Tweet.objects.filter(author__username=profile_string)
     return render(request, "profile.html", {"message": profile_string, "tweets":tweets, "users":users, "current_username":current_username})
 
 def reply_view(request, tweet_id):
+    #tweet_id is the int in the url reply/<int:tweet_id>
     parent = tweet_id
+    parent_tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.method == "POST":
         tweet_text = request.POST.get("tweet")
         if len(tweet_text) <= 140:
@@ -83,7 +86,7 @@ def reply_view(request, tweet_id):
             new_tweet.save()
             return HttpResponseRedirect(reverse("index"))
     
-    return render(request, "reply.html", {"tweet_id": parent})
+    return render(request, "reply.html", {"tweet_id": parent, "parent_tweet": parent_tweet})
 
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)

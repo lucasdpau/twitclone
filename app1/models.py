@@ -11,4 +11,4 @@ class Tweet(models.Model):
     parent_tweet = models.IntegerField(null=True)  #None if this is an inital tweet. If you reply to a tweet, the post being replied to is the parent
     
     def __str__(self): #instead of printing [object at asdasd], this lets python know what to print
-        return f"{self.text} at {self.datetime} by {self.author} parent {self.parent_tweet}"
+        return f"Tweet {self.id} {self.text} at {self.datetime} by {self.author} parent {self.parent_tweet}"
