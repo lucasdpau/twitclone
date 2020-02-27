@@ -12,7 +12,8 @@
             <ul>
                 {% for tweet in tweets %}
                 <li>
-                    {{ tweet }} <a href="/reply/{{tweet.id}}">Reply!</a>
+                    <a href="/tweets/{{tweet.id}}"> {{ tweet }} </a>
+                    <a href="/reply/{{tweet.id}}">Reply!</a>
                 </li>
                 {% endfor %}
             </ul>

@@ -69,11 +69,11 @@ def profile_view(request, profile_name):
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user)
             new_tweet.save()
-    profile_string = profile_name
+    profile_name_string = profile_name
     current_username = request.user.username
     users = User.objects.filter(username="lucas")
     tweets = Tweet.objects.filter(author__username=profile_string)
-    return render(request, "profile.html", {"message": profile_string, "tweets":tweets, "users":users, "current_username":current_username})
+    return render(request, "profile.html", {"message": profile_name_string, "tweets":tweets, "users":users, "current_username":current_username})
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
@@ -90,4 +90,5 @@ def reply_view(request, tweet_id):
 
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     return_string = str(tweet_id)
-    return render(request, "tweet.html", {}) #this loads a webpage that only contains the int entered in the url
+    tweet = Tweet.objects.get(id=tweet_id)
+    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime}) #this loads a webpage that only contains the int entered in the url
