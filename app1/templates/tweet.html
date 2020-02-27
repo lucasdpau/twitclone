@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{%extends "basetemplate.html" %}
+    {%block title %}
         <title>Main Page</title>
-
-    </head>
+    {%endblock%}
+    {%block content%}
     <body>
         <div>
             {%for parent in parent_tweet%}
@@ -28,4 +27,4 @@
             {% endfor %}
         </div>
     </body>
-</html>
+    {%endblock%}

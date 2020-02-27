@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
+{%extends "basetemplate.html" %}
+    {%block title %}
         <title>Main Page</title>
-
-    </head>
+    {%endblock%}
+    {%block content%}
     <body>
         <div>
             <h1>
-                <a href="/profile/{{current_username}}">Hello {{ users }}! </a>
+                <a href="/profile/{{current_username}}">Hello {{ current_username }}! </a>
             </h1>
             <ul>
                 {% for tweet in tweets %}
@@ -32,4 +31,4 @@
             </div>   
         </div>
     </body>
-</html>
+    {%endblock%}

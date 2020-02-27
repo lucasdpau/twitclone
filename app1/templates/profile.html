@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Profile for </title>
-
+{%extends "basetemplate.html" %}
+    {%block title %}
+        <title>Profile for {{ current_username }}</title>
+    {%endblock%}
+    {%block content%}
     </head>
     <body>
         <div>
             <h1>
-                Hello {{ users }}!
+                Hello {{ current_username }}!
             </h1>
             <ul>
                 {% for tweet in tweets %}
@@ -35,4 +35,4 @@
             </div>
         </div>
     </body>
-</html>
+    {%endblock%}
