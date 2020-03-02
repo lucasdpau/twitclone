@@ -12,17 +12,27 @@
             </div>
             <div>
                 <h1>
-                    Register Here!
+                    Create your account
                 </h1>
             </div>
             <div>
                 <form id="registry_form" action="{% url 'register' %}" method="POST">
-                    {% csrf_token %} 
-                    Username<input type="text" name="username">
-                    Email<input type="text" name="email">
-                    Password<input type="password" name="password">
-                    Confirm Password <input type="password" name="confirm">
-                    <input type="submit">
+                    {% csrf_token %}
+                    <div>
+                        Username<input type="text" name="username">
+                    </div>
+                    <div>
+                        Email<input type="text" name="email">
+                    </div>
+                    <div>
+                        Password<input type="password" name="password">
+                    </div>
+                    <div>
+                        Confirm Password <input type="password" name="confirm">
+                    </div>
+                    <div>
+                        <input type="submit">
+                    </div>                    
                 </form>
             </div>
             <div>

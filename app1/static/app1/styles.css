@@ -1,3 +1,9 @@
+header{
+    background-color: skyblue;
+}
+
+
 body{
-    background-color: aquamarine;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
 }

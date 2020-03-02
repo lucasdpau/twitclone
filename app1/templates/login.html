@@ -9,15 +9,24 @@
                 {{ message }}
             </div>
             <div>
-                Login Here!
+                Log in To FakeTwitter Here!
             </div>
             <div>
                 <form id="login_form" action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-                    Username<input type="text" name="username">
-                    Password<input type="password" name="password">
-                    <input type="submit">
+                    <div>
+                        Username<input type="text" name="username">
+                    </div>
+                    <div>
+                        Password<input type="password" name="password">
+                    </div>
+                    <div>
+                        <input type="submit" value="Log in">
+                    </div>
                 </form>
+            </div>
+            <div>
+                <a href="FORGOTPASSWORD">Forgot Password?</a>
             </div>
             <div>
                 <a href="{% url 'register' %}">Register here!</a>
