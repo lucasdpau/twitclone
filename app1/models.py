@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth.models import User #import the uder model so t hat we can extend it with UserProfile
 
 # Create your models here.
 
@@ -12,3 +13,9 @@ class Tweet(models.Model):
     
     def __str__(self): #instead of printing [object at asdasd], this lets python know what to print
         return f"Tweet {self.id} {self.text} at {self.datetime} by {self.author} parent {self.parent_tweet}"
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) #extend the builtin User model with onetoone
+    bio = models.CharField(max_length=300)
+    
+    

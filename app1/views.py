@@ -3,7 +3,7 @@ from django.contrib.auth.models import User              #Allows us to create us
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Tweet
+from .models import Tweet, UserProfile
 # Create your views here.
 
 def index(request):
