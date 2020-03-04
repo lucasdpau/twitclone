@@ -18,7 +18,9 @@
                 {% endfor %}
             </ul>
             <br>
-            {{message}}
+            Viewing {{message}}'s profile
+            <br>
+            is own profile: {{is_own_profile}}
         </div>
         <div>
             <form action="/profile/{{current_username}}" method="POST">

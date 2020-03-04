@@ -71,9 +71,13 @@ def profile_view(request, profile_name):
             new_tweet.save()
     profile_name_string = profile_name
     current_username = request.user.username
-    users = User.objects.filter(username="lucas")
+    if profile_name_string == current_username:
+        is_own_profile = True
+    else:
+        is_own_profile = False
+    #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name_string)
-    return render(request, "profile.html", {"message": profile_name_string, "tweets":tweets, "users":users, "current_username":current_username})
+    return render(request, "profile.html", {"message": profile_name_string, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile})
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
