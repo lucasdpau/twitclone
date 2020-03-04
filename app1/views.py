@@ -61,6 +61,11 @@ def register(request):
             return render(request, "register.html", {"message": "Passwords don't match"})
     else:
         return render(request, "register.html")
+
+def settings_view(request):
+    current_user = request.user.username
+    
+    return render(request, "settings.html", {"current_user":current_user, })
     
     
 def profile_view(request, profile_name):

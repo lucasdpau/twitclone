@@ -1,0 +1,25 @@
+{%extends "basetemplate.html" %}
+    {%block title %}
+        <title>Reply</title>
+    {%endblock%}
+    {%block content%}
+    <body>
+        <div>
+            <h1>
+                Hello {{ current_user }}!
+            </h1>
+        </div>
+        <div>
+            <form action="/reply/{{tweet_id}}" method="POST">
+                {% csrf_token %} 
+            </form>
+        </div>
+        <div>
+            <div>
+                <a href="/">Back</a>
+                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'index' %}">Home</a>
+            </div>
+        </div>
+    </body>
+    {%endblock%}

@@ -11,7 +11,9 @@
             <ul>
                 {% for tweet in tweets %}
                 <li>
-                    <a href="/tweets/{{tweet.id}}"> {{ tweet }} </a>
+                    <a href="/tweets/{{tweet.id}}"> {{ tweet.text }} </a>
+                    <br>
+                    Written by {{tweet.author}} at {{tweet.datetime}}
                     <a href="/reply/{{tweet.id}}">Reply!</a>
                 </li>
                 {% endfor %}
