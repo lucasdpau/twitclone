@@ -16,6 +16,6 @@ class Tweet(models.Model):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #extend the builtin User model with onetoone
-    bio = models.CharField(max_length=300)
+    bio = models.CharField(max_length=300, default="I haven't written a bio yet!", null=True) #bio not strictly needed
     
     
