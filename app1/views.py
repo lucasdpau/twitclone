@@ -64,6 +64,11 @@ def register(request):
 
 def settings_view(request):
     current_user = request.user.username
+    if request.method == "POST":
+        bio_text = request.POST.get("bio")
+        if len(bio_text) <= 300:
+            new_bio = UserProfile(bio=bio_text)
+            new_bio.save()
     
     return render(request, "settings.html", {"current_user":current_user, })
     
@@ -74,15 +79,14 @@ def profile_view(request, profile_name):
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user)
             new_tweet.save()
-    profile_name_string = profile_name
     current_username = request.user.username
-    if profile_name_string == current_username:
+    if profile_name == current_username:
         is_own_profile = True
     else:
         is_own_profile = False
     #filter so that only tweets by the profile_name are shown
-    tweets = Tweet.objects.filter(author__username=profile_name_string)
-    return render(request, "profile.html", {"message": profile_name_string, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile})
+    tweets = Tweet.objects.filter(author__username=profile_name)
+    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile})
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
