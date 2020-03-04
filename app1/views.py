@@ -67,8 +67,9 @@ def settings_view(request):
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         if len(bio_text) <= 300:
-            new_bio = UserProfile(bio=bio_text)
-            new_bio.save()
+            current_user_db_row = User.objects.get(username=current_user)
+            current_user_db_row.bio = bio_text
+            current_user_db_row.save()
     
     return render(request, "settings.html", {"current_user":current_user, })
     
@@ -86,7 +87,8 @@ def profile_view(request, profile_name):
         is_own_profile = False
     #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name)
-    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile})
+    profile_bio = User.objects.get(username=profile_name) #TODO Bio can't be found!
+    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio})
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
