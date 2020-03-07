@@ -3,7 +3,7 @@ from django.contrib.auth.models import User              #Allows us to create us
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Tweet, UserProfile
+from .models import Tweet, Profile
 # Create your views here.
 
 def index(request):
@@ -63,6 +63,7 @@ def register(request):
         return render(request, "register.html")
 
 def settings_view(request):
+    #TODO this feature is bugged, django is unable to locate user.profile, and thus user.profile.bio . relearn the database before fixing this.
     current_user = request.user.username
     if request.method == "POST":
         bio_text = request.POST.get("bio")
@@ -87,8 +88,8 @@ def profile_view(request, profile_name):
         is_own_profile = False
     #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name)
-    profile_bio = User.objects.get(username=profile_name) #TODO Bio can't be found!
-    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio})
+    #profile_bio = User.objects.get(username=profile_name) #TODO Bio can't be found!
+    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile, })
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
