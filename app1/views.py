@@ -60,10 +60,13 @@ def register(request):
             return render(request, "register.html", {"message": "Please confirm the password"})
         
         if password == confirm:
-            #TODO avoid duplicate usernames
-            user = User.objects.create_user(username, email, password)
-            user.save()
-            return render(request, "login.html")
+            check_username = User.objects.filter(username=username)
+            if check_username:
+                return render(request, "register.html", {"message": "Username taken!"})
+            else:
+                user = User.objects.create_user(username, email, password)
+                user.save()
+                return render(request, "login.html")
         else:
             return render(request, "register.html", {"message": "Passwords don't match"})
     else:
