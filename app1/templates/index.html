@@ -15,11 +15,18 @@
                             {{tweet.author}}
                         </div>
                         <div class="tweetcontent">
-                            {{ tweet.text }}
-                            {{tweet.datetime}}
-                            <a href="/reply/{{tweet.id}}">Reply!</a>
-                            <br>
-                            <a href="/tweets/{{tweet.id}}">View Replies</a>
+                            <div class="tweetheader">
+                                {{tweet.datetime}}
+                            </div>
+                            <div>
+                                {{ tweet.text }}
+                            </div>
+                            <div class="tweetreply">
+                                <a href="/reply/{{tweet.id}}">Reply!</a>
+                            </div>
+                            <div class="tweetfooter">
+                                <a href="/tweets/{{tweet.id}}">View Replies</a>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
