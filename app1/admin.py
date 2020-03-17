@@ -15,7 +15,7 @@ class ProfileInline(admin.StackedInline):
     
 #Define a new user admin
 class UserAdmin(BaseUserAdmin):
-    inlines = (EmployeeInline,)
+    inlines = (ProfileInline,)
 
 
 #re-register useradmin

@@ -101,8 +101,8 @@ def profile_view(request, profile_name):
         is_own_profile = False
     #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name)
-    #profile_bio = User.objects.get(username=profile_name) #TODO Bio can't be found!
-    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile, })
+    profile_bio = User.objects.get(username=profile_name).profile.bio #TODO Bio can't be found!
+    return render(request, "profile.html", {"message": profile_name, "tweets":tweets, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, })
 
 def reply_view(request, tweet_id):
     #tweet_id is the int in the url reply/<int:tweet_id>
