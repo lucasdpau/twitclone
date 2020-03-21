@@ -7,6 +7,12 @@ from .models import Tweet, Profile
 # Create your views here.
 
 def index(request):
+    #i used to commented out region to run code, to go through existing users and update the db so that they would have a profile attached
+    #users = User.objects.all()
+    #for user in users:
+        #profile = Profile.objects.filter(user=user)
+        #if profile.count() < 1:
+            #Profile.objects.create(user=user) 
     if not request.user.is_authenticated:
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
     current_username = request.user.username
@@ -82,7 +88,7 @@ def settings_view(request):
         bio_text = request.POST.get("bio")
         if len(bio_text) <= 300:
             current_user_db_row = User.objects.get(username=current_user)
-            current_user_db_row.bio = bio_text
+            current_user_db_row.profile.bio = bio_text
             current_user_db_row.save()
     
     return render(request, "settings.html", {"current_user":current_user, })
