@@ -9,8 +9,10 @@
             <h1>
                 Hello {{ current_username }}!
             </h1>
+        </div>
+        <div class="profile_right_col">
             <div>
-            BIO: Under Construction {{profile_bio}}
+            BIO: {{profile_bio}}
             </div>
             <ul>
                 {% for tweet in tweets %}
