@@ -11,20 +11,22 @@
             </h1>
         </div>
         <div class="profile_right_col">
-            <div>
-            BIO: {{profile_bio}}
+            <div class="profile_bio">
+                BIO: {{profile_bio}}
             </div>
-            <ul>
-                {% for tweet in tweets %}
-                <li>
-                    <div>
-                        {{tweet.text}}
-                        <a href="/tweets/{{tweet.id}}"> {{ tweet }} </a>
-                        <a href="/reply/{{tweet.id}}">Reply!</a>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
+            <div class="tweet_list">
+                <ul>
+                    {% for tweet in tweets %}
+                    <li>
+                        <div>
+                            {{tweet.text}}
+                            <a href="/tweets/{{tweet.id}}"> {{ tweet }} </a>
+                            <a href="/reply/{{tweet.id}}">Reply!</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             <br>
             Viewing {{message}}'s profile
             <br>
