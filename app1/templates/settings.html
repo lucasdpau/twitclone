@@ -22,6 +22,18 @@
             </form>
         </div>
         <div>
+            <form action="settings" method="POST">
+                {% csrf_token %}
+                <input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
+                <label for="green_square">Green Square</label>
+                <input type="radio" id="red_diamond" name="profile_pic" value="red_diamond.jpg">
+                <label for="red_diamond">Red Diamond</label>
+                <input type="radio" id="blue_circle" name="profile_pic" value="blue_circle.jpg">
+                <label for="blue_circle">Blue Circle</label>
+                <input type="submit">
+            </form>
+        </div>
+        <div>
             <div>
                 <a href="/">Back</a>
                 <a href="{% url 'logout' %}">Logout</a>

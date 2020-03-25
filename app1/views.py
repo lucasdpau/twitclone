@@ -88,10 +88,16 @@ def settings_view(request):
     profile_url = "app1/" + profile_pic
     if request.method == "POST":
         bio_text = request.POST.get("bio")
-        if len(bio_text) <= 300:
+        updated_profile_pic = request.POST.get("profile_pic")
+        if bio_text:
+            if len(bio_text) <= 300:
+                current_user_db_row = User.objects.get(username=current_user)
+                current_user_db_row.profile.bio = bio_text
+                current_user_db_row.save()
+        if updated_profile_pic:
             current_user_db_row = User.objects.get(username=current_user)
-            current_user_db_row.profile.bio = bio_text
-            current_user_db_row.save()
+            current_user_db_row.profile.profile_pic = updated_profile_pic
+            current_user_db_row.save() 
     
     return render(request, "settings.html", {"current_user":current_user, "profile_url":profile_url})
     
