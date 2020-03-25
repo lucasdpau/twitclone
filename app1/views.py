@@ -15,8 +15,7 @@ def index(request):
             #Profile.objects.create(user=user) 
     if not request.user.is_authenticated:
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
-    current_username = request.user.username
-    users = User.objects.filter(username="lucas")   
+    current_username = request.user.username  
     # add all queried objects to a list
     tweetlist = []
     for items in Tweet.objects.all():
@@ -26,7 +25,7 @@ def index(request):
     if len(tweetlist) > 5:
         tweetlist = tweetlist[:5]
     authenticated_username = request.user.username
-    return render(request, "index.html", {"tweets": tweetlist, "users":users, "current_username":current_username})
+    return render(request, "index.html", {"tweets": tweetlist, "current_username":current_username})
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made

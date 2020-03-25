@@ -11,20 +11,27 @@
             <div class="tweetcontainer">
                 {% for tweet in tweets %}
                     <div class="tweetcard">
-                        <div class="tweetauthor">
-                            {{tweet.author}}
+                        
+                        <div class="tweet_author_section">
+                            <div>
+                                {{tweet.author}}
+                            </div>
+                            <div class="tweet_profile_pic">
+                                {% load static %}
+                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                            </div>
                         </div>
-                        <div class="tweetcontent">
-                            <div class="tweetheader">
+                        <div class="tweet_content">
+                            <div class="tweet_content_header">
                                 {{tweet.datetime}}
                             </div>
                             <div>
                                 {{ tweet.text }}
                             </div>
-                            <div class="tweetreply">
+                            <div class="tweet_reply">
                                 <a href="/reply/{{tweet.id}}">Reply!</a>
                             </div>
-                            <div class="tweetfooter">
+                            <div class="tweet_footer">
                                 <a href="/tweets/{{tweet.id}}">View Replies</a>
                             </div>
                         </div>
