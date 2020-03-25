@@ -84,6 +84,8 @@ def register(request):
 def settings_view(request):
     #TODO this feature is bugged, django is unable to locate user.profile, and thus user.profile.bio . relearn the database before fixing this.
     current_user = request.user.username
+    profile_pic = User.objects.get(username=current_user).profile.profile_pic
+    profile_url = "app1/" + profile_pic
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         if len(bio_text) <= 300:
@@ -91,7 +93,7 @@ def settings_view(request):
             current_user_db_row.profile.bio = bio_text
             current_user_db_row.save()
     
-    return render(request, "settings.html", {"current_user":current_user, })
+    return render(request, "settings.html", {"current_user":current_user, "profile_url":profile_url})
     
     
 def profile_view(request, profile_name):

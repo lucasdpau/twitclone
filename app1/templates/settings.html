@@ -8,6 +8,10 @@
             <h1>
                 Hello {{ current_user }}!
             </h1>
+            <p>
+                {% load static%}
+                <img src="{% static profile_url %}">
+            </p>
         </div>
         <div>
             <form action="settings" method="POST">
