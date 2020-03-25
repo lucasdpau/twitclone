@@ -137,4 +137,4 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     #get all tweets who have their parent tweet as this tweet.
     child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   
     return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime, 
-                                          "child_tweets": child_tweets, "parent_tweet": parent_tweet}) 
+                                          "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 
