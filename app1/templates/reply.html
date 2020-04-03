@@ -9,11 +9,26 @@
                 Hello {{ users }}!
             </h1>
         </div>
-        <div>
-            <h3>
-                {{parent_tweet.author}} Says:
-            </h3>
-            {{parent_tweet.text}}
+        <div class="tweetcard">
+            <div class="tweet_profile_pic">
+                {% load static %}
+                <a href="../profile/{{parent_tweet.author}}">
+                    <img src="{% static 'app1/' %}{{parent_tweet.author.profile.profile_pic}}">
+                </a>
+            </div>
+            <div class="tweet_content">
+                <div class="tweet_content_header">
+                    <div class="tweet_author">
+                        <a href="../profile/{{parent_tweet.author}}">{{parent_tweet.author}}</a>
+                    </div>
+                    <div class="tweet_time">
+                        {{parent_tweet.datetime}}
+                    </div>
+                </div>
+                <div>
+                    {{ parent_tweet.text }}
+                </div>
+            </div>
         </div>
         <div>
             <form action="/reply/{{tweet_id}}" method="POST">
