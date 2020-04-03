@@ -1,5 +1,6 @@
 envsetup.bat
 *.wpr
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -13,12 +13,14 @@
                     <div class="tweetcard">
                         <div class="tweet_profile_pic">
                             {% load static %}
-                            <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                            <a href="profile/{{tweet.author}}">
+                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                            </a>
                         </div>
                         <div class="tweet_content">
                             <div class="tweet_content_header">
                                 <div class="tweet_author">
-                                    {{tweet.author}}
+                                    <a href="profile/{{tweet.author}}">{{tweet.author}}</a>
                                 </div>
                                 <div class="tweet_time">
                                     {{tweet.datetime}}

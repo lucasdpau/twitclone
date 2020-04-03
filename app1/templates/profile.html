@@ -36,13 +36,35 @@
             <div class="tweet_list">
                 <ul>
                     {% for tweet in tweets %}
-                    <li>
-                        <div>
-                            {{tweet.text}}
-                            <a href="/tweets/{{tweet.id}}"> {{ tweet }} </a>
-                            <a href="/reply/{{tweet.id}}">Reply!</a>
+                    <div class="tweetcard">
+                        <div class="tweet_profile_pic">
+                            {% load static %}
+                            <a href="profile/{{tweet.author}}">
+                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                            </a>
                         </div>
-                    </li>
+                        <div class="tweet_content">
+                            <div class="tweet_content_header">
+                                <div class="tweet_author">
+                                    <a href="{{tweet.author}}">{{tweet.author}}</a>
+                                </div>
+                                <div class="tweet_time">
+                                    {{tweet.datetime}}
+                                </div>
+                            </div>
+                            <div>
+                                {{ tweet.text }}
+                            </div>
+                            <div class="tweet_footer">
+                                <div class="tweet_reply">
+                                    <a href="/reply/{{tweet.id}}">Reply!</a>
+                                </div>
+                                <div class="tweet_children"> 
+                                    <a href="/tweets/{{tweet.id}}">View Replies</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </ul>
             </div>
