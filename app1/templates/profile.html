@@ -14,11 +14,13 @@
                     {% load static %}
                         <img src="{% static 'app1/' %}{{profile_pic}}">
                 </div>
+                {% if not is_own_profile %}
                 <div class="profile_follow_button">
                     <button type="button">
                         Follow!
                     </button>
                 </div>
+                {% endif %}
             </div>
             <div class="profile_info">
                 <div class="profile_username">
