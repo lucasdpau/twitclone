@@ -98,7 +98,7 @@ def settings_view(request):
             current_user_db_row.profile.profile_pic = updated_profile_pic
             current_user_db_row.save() 
     
-    return render(request, "settings.html", {"current_user":current_user, "profile_url":profile_url})
+    return render(request, "settings.html", {"current_username":current_user, "profile_url":profile_url})
     
     
 def profile_view(request, profile_name):
@@ -123,6 +123,7 @@ def profile_view(request, profile_name):
     return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic })
 
 def reply_view(request, tweet_id):
+    current_username = request.user.username
     #tweet_id is the int in the url reply/<int:tweet_id>
     parent = tweet_id
     parent_tweet = Tweet.objects.filter(id=tweet_id)[0]
@@ -133,13 +134,14 @@ def reply_view(request, tweet_id):
             new_tweet.save()
             return HttpResponseRedirect(reverse("index"))
     
-    return render(request, "reply.html", {"tweet_id": parent, "parent_tweet": parent_tweet})
+    return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "parent_tweet": parent_tweet})
 
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
+    current_username = request.user.username
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
     parent_tweet = Tweet.objects.filter(id=tweet.parent_tweet)
     #get all tweets who have their parent tweet as this tweet.
     child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   
-    return render(request, "tweet.html", {"tweet_text": tweet.text, "tweet_author": tweet.author, "tweet_datetime": tweet.datetime, 
+    return render(request, "tweet.html", {"current_username": current_username, "tweet":tweet, "tweet_text": tweet.text, 
                                           "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 

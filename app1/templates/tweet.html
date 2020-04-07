@@ -5,25 +5,29 @@
     {%block content%}
     <body>
         <div>
+            PARENTS HERE
             {%for parent in parent_tweet%}
                 {{parent}}
             {%endfor%}
         </div>
         <div class="tweetcard">
-            <div class="tweetauthorpic">
-                Pic
+            <div class="tweet_profile_pic">
+                {% load static %}
+                <a href="../profile/{{parent_tweet.author}}">
+                    <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                </a>
             </div>
-            <div class="tweetcontent">
-                <div class="tweetheader">
-                    <div class="tweetauthor">
-                        {{tweet_author}}
+            <div class="tweet_content">
+                <div class="tweet_content_header">
+                    <div class="tweet_author">
+                        <a href="../profile/{{tweet.author}}">{{tweet.author}}</a>
                     </div>
-                    <div class="tweettime">
-                        {{tweet_datetime}}
+                    <div class="tweet_time">
+                        {{tweet.datetime}}
                     </div>
                 </div>
                 <div class="tweettext">
-                    {{ tweet_text }}
+                    {{tweet.text}}
                 </div>
                 <div class="tweetfooter">
                     <a href="/reply/{{tweet_id}}">Reply!</a>   
@@ -31,14 +35,36 @@
             </div>
         </div> 
         <div>
+            <ul>
             {% for child in child_tweets%}
             <li>
-                <ul>
-                    <a href="../tweets/{{child.id}}">{{child}}</a>
-                    <a href="../reply/{{child.id}}">Reply!</a>
-                </ul>
+                <div class="tweetcard">
+                    <div class="tweet_profile_pic">
+                        {% load static %}
+                        <a href="../profile/{{child.author}}">
+                            <img src="{% static 'app1/' %}{{child.author.profile.profile_pic}}">
+                        </a>
+                    </div>
+                    <div class="tweet_content">
+                        <div class="tweet_content_header">
+                            <div class="tweet_author">
+                                <a href="../profile/{{child.author}}">{{child.author}}</a>
+                            </div>
+                            <div class="tweet_time">
+                                {{child.datetime}}
+                            </div>
+                        </div>
+                        <div class="tweettext">
+                            {{child.text}}
+                        </div>
+                        <div class="tweetfooter">
+                            <a href="/reply/{{child.id}}">Reply!</a>   
+                        </div>            
+                    </div>
+                </div> 
             </li>
             {% endfor %}
+            </ul>
         </div>
         <div>
             <div>
