@@ -141,7 +141,7 @@ def reply_view(request, tweet_id):
             new_tweet.save()
             return HttpResponseRedirect(reverse("index"))
     
-    return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "parent_tweet": parent_tweet})
+    return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "tweet": parent_tweet})
 
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     current_username = request.user.username
