@@ -11,14 +11,27 @@
             <p>
                 {% load static%}
                 <img src="{% static profile_url %}">
+                <div class="profile_bio">
+                    BIO: {{profile_bio}}
+                </div>
+                <div class="profile_location">
+                    Location: {{ profile_location }}
+                </div>
             </p>
         </div>
         <div>
             <form action="settings" method="POST">
                 {% csrf_token %} 
-                Write your bio here! (Max 300 chars)
-                <input type="text" name="bio">
-                <input type="submit">
+                <div class="settings_bio"> 
+                    Write your bio here! (Max 300 chars)
+                    <input type="text" name="bio">
+                    <input type="submit">
+                </div>
+                <div class="settings_location">
+                    Enter your location here!
+                    <input type="text" name="location">
+                    <input type="submit"
+                </div>
             </form>
         </div>
         <div>

@@ -82,23 +82,28 @@ def register(request):
 
 def settings_view(request):
     #TODO this feature is bugged, django is unable to locate user.profile, and thus user.profile.bio . relearn the database before fixing this.
-    current_user = request.user.username
-    profile_pic = User.objects.get(username=current_user).profile.profile_pic
+    current_username = request.user.username
+    user_model_object = User.objects.get(username=current_username)
+    profile_pic = user_model_object.profile.profile_pic
     profile_url = "app1/" + profile_pic
+    profile_location = user_model_object.profile.location
     if request.method == "POST":
         bio_text = request.POST.get("bio")
+        location_text = request.POST.get("location")
         updated_profile_pic = request.POST.get("profile_pic")
         if bio_text:
             if len(bio_text) <= 300:
-                current_user_db_row = User.objects.get(username=current_user)
-                current_user_db_row.profile.bio = bio_text
-                current_user_db_row.save()
+                user_model_object.profile.bio = bio_text
+                user_model_object.save()
+        if location_text:
+            if len(location_text) <= 60:
+                user_model_object.profile.location = location_text
+                user_model_object.save()
         if updated_profile_pic:
-            current_user_db_row = User.objects.get(username=current_user)
-            current_user_db_row.profile.profile_pic = updated_profile_pic
-            current_user_db_row.save() 
+            user_model_object.profile.profile_pic = updated_profile_pic
+            user_model_object.save()
     
-    return render(request, "settings.html", {"current_username":current_user, "profile_url":profile_url})
+    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, })
     
     
 def profile_view(request, profile_name):
@@ -118,9 +123,11 @@ def profile_view(request, profile_name):
     for items in tweets:
         tweet_list.append(items)
     tweet_list.reverse()
-    profile_bio = User.objects.get(username=profile_name).profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
-    profile_pic = User.objects.get(username=profile_name).profile.profile_pic
-    return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic })
+    user_model_object = User.objects.get(username=profile_name)
+    profile_bio = user_model_object.profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
+    profile_pic = user_model_object.profile.profile_pic
+    profile_location = user_model_object.profile.location
+    return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location })
 
 def reply_view(request, tweet_id):
     current_username = request.user.username

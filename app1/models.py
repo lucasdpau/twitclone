@@ -25,6 +25,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #extend the builtin User model with onetoone
     bio = models.CharField(max_length=300, default="I haven't written a bio yet!")
     profile_pic = models.CharField(max_length=140, default="green_square.jpg")
+    location = models.CharField(max_length=60, default="Nowhere")
     
     
 @receiver(post_save, sender=User)
