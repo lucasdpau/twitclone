@@ -4,67 +4,84 @@
     {%endblock%}
     {%block content%}
     <body>
-        <div>
+        <div class="tweetcontainer">
             PARENTS HERE
             {%for parent in parent_tweet%}
-                {{parent}}
+            <div class="tweetcard parent-tweet">
+                <div class="tweet_profile_pic">
+                    {% load static %}
+                    <a href="../profile/{{parent.author}}">
+                        <img src="{% static 'app1/' %}{{parent.author.profile.profile_pic}}">
+                    </a>
+                </div>
+                <div class="tweet_content">
+                    <div class="tweet_content_header">
+                        <div class="tweet_author">
+                            <a href="../profile/{{parent.author}}">{{parent.author}}</a>
+                        </div>
+                        <div class="tweet_time">
+                            {{parent.datetime}}
+                        </div>
+                    </div>
+                    <div class="tweettext">
+                        {{parent.text}}
+                    </div>
+                    <div class="tweetfooter">
+                        <a href="/reply/{{parent.id}}">Reply!</a>   
+                    </div>            
+                </div>
+            </div> 
             {%endfor%}
-        </div>
-        <div class="tweetcard">
-            <div class="tweet_profile_pic">
-                {% load static %}
-                <a href="../profile/{{parent_tweet.author}}">
-                    <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
-                </a>
-            </div>
-            <div class="tweet_content">
-                <div class="tweet_content_header">
-                    <div class="tweet_author">
-                        <a href="../profile/{{tweet.author}}">{{tweet.author}}</a>
-                    </div>
-                    <div class="tweet_time">
-                        {{tweet.datetime}}
-                    </div>
+            <div class="tweetcard">
+                <div class="tweet_profile_pic">
+                    {% load static %}
+                    <a href="../profile/{{parent_tweet.author}}">
+                        <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                    </a>
                 </div>
-                <div class="tweettext">
-                    {{tweet.text}}
+                <div class="tweet_content">
+                    <div class="tweet_content_header">
+                        <div class="tweet_author">
+                            <a href="../profile/{{tweet.author}}">{{tweet.author}}</a>
+                        </div>
+                        <div class="tweet_time">
+                            {{tweet.datetime}}
+                        </div>
+                    </div>
+                    <div class="tweettext">
+                        {{tweet.text}}
+                    </div>
+                    <div class="tweetfooter">
+                        <a href="/reply/{{tweet_id}}">Reply!</a>   
+                    </div>            
                 </div>
-                <div class="tweetfooter">
-                    <a href="/reply/{{tweet_id}}">Reply!</a>   
-                </div>            
-            </div>
-        </div> 
-        <div>
-            <ul>
+            </div> 
             {% for child in child_tweets%}
-            <li>
-                <div class="tweetcard">
-                    <div class="tweet_profile_pic">
-                        {% load static %}
-                        <a href="../profile/{{child.author}}">
-                            <img src="{% static 'app1/' %}{{child.author.profile.profile_pic}}">
-                        </a>
-                    </div>
-                    <div class="tweet_content">
-                        <div class="tweet_content_header">
-                            <div class="tweet_author">
-                                <a href="../profile/{{child.author}}">{{child.author}}</a>
-                            </div>
-                            <div class="tweet_time">
-                                {{child.datetime}}
-                            </div>
+            <div class="tweetcard">
+                <div class="tweet_profile_pic">
+                    {% load static %}
+                    <a href="../profile/{{child.author}}">
+                        <img src="{% static 'app1/' %}{{child.author.profile.profile_pic}}">
+                    </a>
+                </div>
+                <div class="tweet_content">
+                    <div class="tweet_content_header">
+                        <div class="tweet_author">
+                            <a href="../profile/{{child.author}}">{{child.author}}</a>
                         </div>
-                        <div class="tweettext">
-                            {{child.text}}
+                        <div class="tweet_time">
+                            {{child.datetime}}
                         </div>
-                        <div class="tweetfooter">
-                            <a href="/reply/{{child.id}}">Reply!</a>   
-                        </div>            
                     </div>
-                </div> 
-            </li>
+                    <div class="tweettext">
+                        {{child.text}}
+                    </div>
+                    <div class="tweetfooter">
+                        <a href="/reply/{{child.id}}">Reply!</a>   
+                    </div>            
+                </div>
+            </div> 
             {% endfor %}
-            </ul>
         </div>
         <div>
             <div>

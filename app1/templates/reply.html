@@ -9,34 +9,36 @@
                 Hello {{ users }}!
             </h1>
         </div>
-        <div class="tweetcard">
-            <div class="tweet_profile_pic">
-                {% load static %}
-                <a href="../profile/{{tweet.author}}">
-                    <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
-                </a>
-            </div>
-            <div class="tweet_content">
-                <div class="tweet_content_header">
-                    <div class="tweet_author">
-                        <a href="../profile/{{tweet.author}}">{{tweet.author}}</a>
+        <div class="tweetcontainer">
+            <div class="tweetcard">
+                <div class="tweet_profile_pic">
+                    {% load static %}
+                    <a href="../profile/{{tweet.author}}">
+                        <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                    </a>
+                </div>
+                <div class="tweet_content">
+                    <div class="tweet_content_header">
+                        <div class="tweet_author">
+                            <a href="../profile/{{tweet.author}}">{{tweet.author}}</a>
+                        </div>
+                        <div class="tweet_time">
+                            {{tweet.datetime}}
+                        </div>
                     </div>
-                    <div class="tweet_time">
-                        {{tweet.datetime}}
+                    <div class="tweettext">
+                        {{tweet.text}}
                     </div>
                 </div>
-                <div class="tweettext">
-                    {{tweet.text}}
-                </div>
             </div>
-        </div>
-        <div>
-            <form action="/reply/{{tweet_id}}" method="POST">
-                {% csrf_token %} 
-                Enter a reply here! (Max 140 chars)
-                <input type="text" name="tweet">
-                <input type="submit" value="TWEET">
-            </form>
+            <div>
+                <form action="/reply/{{tweet_id}}" method="POST">
+                    {% csrf_token %} 
+                    Enter a reply here! (Max 140 chars)
+                    <input type="text" name="tweet">
+                    <input type="submit" value="TWEET">
+                </form>
+            </div>
         </div>
         <div>
             <div>
