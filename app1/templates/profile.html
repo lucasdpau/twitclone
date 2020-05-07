@@ -4,8 +4,8 @@
     {%endblock%}
     {%block content%}
     </head>
-    <body>
-        <div class="profile_wrapper">
+    <body class="profile_wrapper">
+        <div>
             <div class="profile_header">
                 <div class="profile_banner">
 
@@ -24,17 +24,19 @@
             </div>
             <div class="profile_info">
                 <div class="profile_username">
-                    Viewing {{profile_name}}'s profile
+                    {{profile_name}}'s profile
                 </div>
                 <div class="profile_bio">
-                    BIO: {{profile_bio}}
+                    {{profile_bio}}
                 </div>
-                <div class="profile_location">
-                    {{ profile_location }}
-                </div>
-                <div class="profile_joindate">
-                    Joined: {{ profile_date_joined }}
-                </div>
+		<div class="profile_other_info">
+               	 	<div class="profile_location">
+                   		Location: {{ profile_location }}
+                	</div>
+                	<div class="profile_joindate">
+                    		Joined: {{ profile_date_joined }}
+                	</div>
+		</div>
                 <div class="profile_followers">
                     Followers:
                 </div>
@@ -74,9 +76,9 @@
         <div>
             <form action="/profile/{{current_username}}" method="POST">
                 {% csrf_token %} 
-                Enter a new tweet here! (Max 140 chars)
-                <input type="text" name="tweet">
-                <input type="submit" value="TWEET">
+                <textarea name="tweet"></textarea>
+		<br>
+                <input type="submit" value="TWEET (Max 140 chars)">
             </form>
         </div>
         <div>
