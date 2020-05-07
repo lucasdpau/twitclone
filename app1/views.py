@@ -87,7 +87,8 @@ def settings_view(request):
     profile_pic = user_model_object.profile.profile_pic
     profile_url = "app1/" + profile_pic
     profile_location = user_model_object.profile.location
-    profile_bio = user_model_object.profile.bio 
+    profile_bio = user_model_object.profile.bio
+    profile_date_joined = user_model_object.date_joined
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         location_text = request.POST.get("location")
@@ -104,7 +105,7 @@ def settings_view(request):
             user_model_object.profile.profile_pic = updated_profile_pic
             user_model_object.save()
     
-    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio })
+    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio, "profile_date_joined": profile_date_joined  })
     
     
 def profile_view(request, profile_name):
@@ -128,7 +129,8 @@ def profile_view(request, profile_name):
     profile_bio = user_model_object.profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
     profile_pic = user_model_object.profile.profile_pic
     profile_location = user_model_object.profile.location
-    return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location })
+    profile_date_joined = user_model_object.date_joined
+    return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined })
 
 def reply_view(request, tweet_id):
     current_username = request.user.username

@@ -4,11 +4,11 @@
     {%endblock%}
     {%block content%}
     <body>
-        <div>
+        <div class="index_wrapper">
             <h1>
                 <a href="/profile/{{current_username}}">Hello {{ current_username }}! </a>
             </h1>
-            <div class="tweetcontainer">
+            <div class="tweet_container">
                 {% for tweet in tweets %}
                     <div class="tweetcard">
                         <div class="tweet_profile_pic">

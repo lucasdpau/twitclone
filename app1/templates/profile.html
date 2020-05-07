@@ -5,7 +5,7 @@
     {%block content%}
     </head>
     <body>
-        <div class="profile_right_col">
+        <div class="profile_wrapper">
             <div class="profile_header">
                 <div class="profile_banner">
 
@@ -33,13 +33,13 @@
                     {{ profile_location }}
                 </div>
                 <div class="profile_joindate">
-                    Joined:
+                    Joined: {{ profile_date_joined }}
                 </div>
                 <div class="profile_followers">
                     Followers:
                 </div>
             </div>
-            <div class="tweetcontainer">
+            <div class="tweet_container">
                     {% for tweet in tweets %}
                     <div class="tweetcard">
                         <div class="tweet_profile_pic">
@@ -57,16 +57,12 @@
                                     {{tweet.datetime}}
                                 </div>
                             </div>
-                            <div>
+                            <div class="tweet_text">
                                 {{ tweet.text }}
                             </div>
                             <div class="tweet_footer">
-                                <div class="tweet_reply">
-                                    <a href="/reply/{{tweet.id}}">Reply!</a>
-                                </div>
-                                <div class="tweet_children"> 
-                                    <a href="/tweets/{{tweet.id}}">View Replies</a>
-                                </div>
+                                <a href="/reply/{{tweet.id}}">Reply!</a>
+                                <a href="/tweets/{{tweet.id}}">View Replies</a>
                             </div>
                         </div>
                     </div>

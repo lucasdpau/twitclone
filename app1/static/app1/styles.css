@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 header{
     background-color: skyblue;
 }
@@ -8,35 +13,57 @@ body{
     text-align: center;
 }
 
-.tweetcontainer{
-    width: 50%;
-    margin: 0 auto;
+.profile_wrapper {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.index_wrapper {
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tweet_container {
 }
 .parent-tweet {
     background-color: aquamarine;
 }
 
 .tweetcard{
-    margin-top: 20px;
-    margin-bottom: 20px;
+	max-width: 700px;
     padding-top:20px;
     padding-bottom: 20px;
-    border: 2px solid;
+    border: 1px solid;
     display:flex;
     flex-direction: row;
-    justify-content: center;
 }
 
-.tweetcard * {
-    border: 1px solid;
+.tweet_profile_pic {
+	width: 64px;
+}
+
+.tweet_content {
+	max-width: 636px;
+	flex-grow: 1;
+}
+
+.tweet_content_header {
+    text-align:left;
 }
 
 .tweet_content_header * {
     display: inline;
 }
 
-.tweetauthor{
+.tweet_author {
     height: auto;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.tweet_text {
 }
 
 .tweet_footer * {

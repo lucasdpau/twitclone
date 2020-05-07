@@ -11,6 +11,9 @@
             <p>
                 {% load static%}
                 <img src="{% static profile_url %}">
+		<div>
+			<p>Date Joined: {{ profile_date_joined }}</p>
+		</div>
                 <div class="profile_bio">
                     BIO: {{ profile_bio }}
                 </div>
