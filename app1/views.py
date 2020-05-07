@@ -87,6 +87,7 @@ def settings_view(request):
     profile_pic = user_model_object.profile.profile_pic
     profile_url = "app1/" + profile_pic
     profile_location = user_model_object.profile.location
+    profile_bio = user_model_object.profile.bio 
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         location_text = request.POST.get("location")
@@ -103,7 +104,7 @@ def settings_view(request):
             user_model_object.profile.profile_pic = updated_profile_pic
             user_model_object.save()
     
-    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, })
+    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio })
     
     
 def profile_view(request, profile_name):

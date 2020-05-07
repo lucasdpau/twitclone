@@ -12,7 +12,7 @@
                 {% load static%}
                 <img src="{% static profile_url %}">
                 <div class="profile_bio">
-                    BIO: {{profile_bio}}
+                    BIO: {{ profile_bio }}
                 </div>
                 <div class="profile_location">
                     Location: {{ profile_location }}
@@ -22,21 +22,14 @@
         <div>
             <form action="settings" method="POST">
                 {% csrf_token %} 
-                <div class="settings_bio"> 
-                    Write your bio here! (Max 300 chars)
-                    <input type="text" name="bio">
-                    <input type="submit">
+                <div class="settings_bio">                 
+                    <input type="text" name="bio" id="bio">
+		    <label for="bio">Write your bio here! (Max 300 chars)</label>
+			<br>               
+                    <input type="text" name="location" id="location">
+		    <label for="location">Enter your location here!</label>  
                 </div>
-                <div class="settings_location">
-                    Enter your location here!
-                    <input type="text" name="location">
-                    <input type="submit">
-                </div>
-            </form>
-        </div>
-        <div>
-            <form action="settings" method="POST">
-                {% csrf_token %}
+		<div>
                 <input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
                 <label for="green_square">Green Square</label>
                 <input type="radio" id="red_diamond" name="profile_pic" value="red_diamond.jpg">
@@ -44,6 +37,7 @@
                 <input type="radio" id="blue_circle" name="profile_pic" value="blue_circle.jpg">
                 <label for="blue_circle">Blue Circle</label>
                 <input type="submit">
+		</div>
             </form>
         </div>
         <div>
