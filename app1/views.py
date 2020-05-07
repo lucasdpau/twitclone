@@ -4,6 +4,21 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Tweet, Profile
+import datetime
+
+# functions here.
+def parse_time(tweet_obj):
+    now = datetime.datetime.now(datetime.timezone.utc)
+    time_diff = now - tweet_obj.datetime      #time diff only keeps track of days/seconds and microseconds
+    if time_diff.seconds <= 86400: #if less than 1 day has passed since the post
+        if time_diff.seconds <= 3600: #if lass than 1 hour has passed since the post
+            time_diff_mins = int(time_diff.seconds/60)
+            tweet_obj.datetime = str(time_diff_mins) + "m"
+        else:
+            time_diff_hrs = int(time_diff.seconds/3600)
+            tweet_obj.datetime = str(time_diff_hrs) + "h"
+
+
 # Create your views here.
 
 def index(request):
@@ -25,6 +40,9 @@ def index(request):
     if len(tweetlist) > 5:
         tweetlist = tweetlist[:5]
     authenticated_username = request.user.username
+    for tweet in tweetlist:
+        parse_time(tweet)
+            
     return render(request, "index.html", {"tweets": tweetlist, "current_username":current_username})
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
@@ -81,7 +99,6 @@ def register(request):
         return render(request, "register.html")
 
 def settings_view(request):
-    #TODO this feature is bugged, django is unable to locate user.profile, and thus user.profile.bio . relearn the database before fixing this.
     current_username = request.user.username
     user_model_object = User.objects.get(username=current_username)
     profile_pic = user_model_object.profile.profile_pic
@@ -114,6 +131,8 @@ def profile_view(request, profile_name):
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user)
             new_tweet.save()
+        else:
+            return HttpResponse("Char limit of 140 exceeded")
     current_username = request.user.username
     if profile_name == current_username:
         is_own_profile = True
@@ -125,6 +144,8 @@ def profile_view(request, profile_name):
     for items in tweets:
         tweet_list.append(items)
     tweet_list.reverse()
+    for tweet in tweet_list:
+        parse_time(tweet)
     user_model_object = User.objects.get(username=profile_name)
     profile_bio = user_model_object.profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
     profile_pic = user_model_object.profile.profile_pic
@@ -143,6 +164,8 @@ def reply_view(request, tweet_id):
             new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
             new_tweet.save()
             return HttpResponseRedirect(reverse("index"))
+        else:
+            return HttpResponse("Char limit of 140 exceeded")
     
     return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "tweet": parent_tweet})
 
