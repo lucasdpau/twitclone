@@ -13,6 +13,13 @@ body{
     text-align: center;
 }
 
+textarea {
+	width: 100%;
+	max-width: 400px;
+	height: 100px;
+	resize: none;
+}
+
 .profile_wrapper {
 	max-width: 700px;
 	margin-left: auto;
@@ -61,6 +68,12 @@ body{
     height: auto;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+}
+
+.tweet_author a {
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
 }
 
 .tweet_text {

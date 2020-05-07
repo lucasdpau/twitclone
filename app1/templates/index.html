@@ -45,10 +45,10 @@
         </div>
         <div>
             <form action="/profile/{{current_username}}" method="POST">
-                {% csrf_token %} 
-                Enter your tweet here! (Max 140 chars)
-                <input type="text" name="tweet">
-                <input type="submit" value="TWEET">
+                {% csrf_token %}  
+           	<textarea name="tweet"></textarea>
+		<br>
+                <input type="submit" value="TWEET (Max 140 chars)">
             </form>
         </div>
         <div>
