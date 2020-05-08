@@ -185,6 +185,7 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
 def delete_tweet(request, tweet_id):
     tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.user.username == tweet.author.username:
+        tweet.deleted_text = tweet.text
         tweet.text = "[Deleted]"
         tweet.save()
         return HttpResponse("Deletion succesful.")
