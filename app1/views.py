@@ -35,7 +35,8 @@ def index(request):
     # add all queried objects to a list
     tweetlist = []
     for items in Tweet.objects.all():
-        tweetlist.append(items)
+        if not items.is_deleted:
+            tweetlist.append(items)
     #reverse the list so that the latest tweets are on top
     tweetlist.reverse()
     if len(tweetlist) > 5:
@@ -143,7 +144,8 @@ def profile_view(request, profile_name):
     tweets = Tweet.objects.filter(author__username=profile_name)
     tweet_list = []
     for items in tweets:
-        tweet_list.append(items)
+        if not items.is_deleted:
+            tweet_list.append(items)
     tweet_list.reverse()
     for tweet in tweet_list:
         parse_time(tweet)
@@ -186,6 +188,7 @@ def delete_tweet(request, tweet_id):
     tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.user.username == tweet.author.username:
         tweet.deleted_text = tweet.text
+        tweet.is_deleted = True
         tweet.text = "[Deleted]"
         tweet.save()
         return HttpResponse("Deletion succesful.")
