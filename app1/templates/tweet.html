@@ -35,7 +35,7 @@
             <div class="tweetcard">
                 <div class="tweet_profile_pic">
                     {% load static %}
-                    <a href="../profile/{{parent_tweet.author}}">
+                    <a href="../profile/{{tweet.author}}">
                         <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
                     </a>
                 </div>

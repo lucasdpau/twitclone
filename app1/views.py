@@ -164,6 +164,8 @@ def reply_view(request, tweet_id):
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
             new_tweet.save()
+            parent_tweet.replies += 1
+            parent_tweet.save()
             return HttpResponseRedirect(reverse("index"))
         else:
             return HttpResponse("Char limit of 140 exceeded")

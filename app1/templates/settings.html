@@ -4,11 +4,12 @@
     {%endblock%}
     {%block content%}
     <body>
+	<main class="index_wrapper">
         <div>
             <h1>
                 Hello {{ current_username }}!
             </h1>
-            <p>
+            <div>
                 {% load static%}
                 <img src="{% static profile_url %}">
 		<div>
@@ -20,13 +21,13 @@
                 <div class="profile_location">
                     Location: {{ profile_location }}
                 </div>
-            </p>
+            </div>
         </div>
         <div>
             <form action="settings" method="POST">
                 {% csrf_token %} 
                 <div class="settings_bio">                 
-                    <input type="text" name="bio" id="bio">
+                    <textarea name="bio" id="bio"></textarea>
 		    <label for="bio">Write your bio here! (Max 300 chars)</label>
 			<br>               
                     <input type="text" name="location" id="location">
@@ -50,6 +51,7 @@
                 <a href="{% url 'index' %}">Home</a>
             </div>
         </div>
+	</main>
     {%block tweet%}
     {%endblock%}
     </body>

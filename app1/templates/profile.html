@@ -46,7 +46,7 @@
                     <div class="tweetcard">
                         <div class="tweet_profile_pic">
                             {% load static %}
-                            <a href="profile/{{tweet.author}}">
+                            <a href="../profile/{{tweet.author}}">
                                 <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
                             </a>
                         </div>
@@ -64,7 +64,7 @@
                             </div>
                             <div class="tweet_footer">
                                 <a href="/reply/{{tweet.id}}">Reply!</a>
-                                <a href="/tweets/{{tweet.id}}">View Replies</a>
+                                <a href="/tweets/{{tweet.id}}">View Replies ({{tweet.replies}})</a>
                             </div>
                         </div>
                     </div>
