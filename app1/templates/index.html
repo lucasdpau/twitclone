@@ -30,12 +30,11 @@
                                 {{ tweet.text }}
                             </div>
                             <div class="tweet_footer">
-                                <div class="tweet_reply">
-                                    <a href="/reply/{{tweet.id}}">Reply!</a>
-                                </div>
-                                <div class="tweet_children"> 
-                                    <a href="/tweets/{{tweet.id}}">View Replies</a>
-                                </div>
+                                <a href="/reply/{{tweet.id}}">Reply!</a> 
+                                <a href="/tweets/{{tweet.id}}">View Replies</a>
+				{% if current_username == tweet.author.username %}
+				<a href="/delete/{{tweet.id}}">Delete</a>
+				{% endif %}
                             </div>
                         </div>
                     </div>

@@ -181,3 +181,14 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   
     return render(request, "tweet.html", {"current_username": current_username, "tweet":tweet, "tweet_text": tweet.text, 
                                           "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 
+
+def delete_tweet(request, tweet_id):
+    tweet = Tweet.objects.filter(id=tweet_id)[0]
+    if request.user.username == tweet.author.username:
+        tweet.text = "[Deleted]"
+        tweet.save()
+        return HttpResponse("Deletion succesful.")
+    else:
+        return HttpResponse("You are not the author of this tweet.")
+    
+    

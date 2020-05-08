@@ -13,5 +13,6 @@ urlpatterns = [
     path("profile/<profile_name>", views.profile_view, name="profile"),
     path("reply/<int:tweet_id>", views.reply_view, name="reply",),
     #if the user types an integer into the url, it will go to views.tweet and act appropriately depending on the int
-    path("tweets/<int:tweet_id>", views.tweet_view, name="integer"),           
+    path("tweets/<int:tweet_id>", views.tweet_view, name="integer"), 
+    path("delete/<int:tweet_id>", views.delete_tweet, name="delete"),          
     ] 
