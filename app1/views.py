@@ -8,10 +8,11 @@ import datetime
 
 # functions here.
 def parse_time(tweet_obj):
+    # calculates time between now and the time of a tweet_object's posting
     now = datetime.datetime.now(datetime.timezone.utc)
     time_diff = now - tweet_obj.datetime      #time diff only keeps track of days/seconds and microseconds
-    if time_diff.seconds <= 86400: #if less than 1 day has passed since the post
-        if time_diff.seconds <= 3600: #if lass than 1 hour has passed since the post
+    if time_diff.days < 1:
+        if time_diff.seconds <= 3600: #if less than 1 hour has passed since the post
             time_diff_mins = int(time_diff.seconds/60)
             tweet_obj.datetime = str(time_diff_mins) + "m"
         else:
