@@ -31,6 +31,7 @@ def index(request):
             #Profile.objects.create(user=user) 
     if not request.user.is_authenticated:
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
+    current_user = request.user
     current_username = request.user.username  
     # add all queried objects to a list
     tweetlist = []
@@ -45,7 +46,7 @@ def index(request):
     for tweet in tweetlist:
         parse_time(tweet)
             
-    return render(request, "index.html", {"tweets": tweetlist, "current_username":current_username})
+    return render(request, "index.html", {"tweets": tweetlist, "current_user": current_user, "current_username":current_username})
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made
@@ -135,6 +136,7 @@ def profile_view(request, profile_name):
             new_tweet.save()
         else:
             return HttpResponse("Char limit of 140 exceeded")
+    current_user = request.user
     current_username = request.user.username
     if profile_name == current_username:
         is_own_profile = True
@@ -154,7 +156,7 @@ def profile_view(request, profile_name):
     profile_pic = user_model_object.profile.profile_pic
     profile_location = user_model_object.profile.location
     profile_date_joined = user_model_object.date_joined
-    return render(request, "profile.html", {"profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined })
+    return render(request, "profile.html", { "current_user": current_user, "profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined })
 
 def reply_view(request, tweet_id):
     current_username = request.user.username

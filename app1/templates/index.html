@@ -34,7 +34,7 @@
                             </div>
                             <div class="tweet_footer">
                                 <a href="/reply/{{tweet.id}}">Reply!</a> 
-                                <a href="/tweets/{{tweet.id}}">View Replies</a>
+                                <a href="/tweets/{{tweet.id}}">View Replies ({{tweet.replies}})</a>
 				{% if current_username == tweet.author.username %}
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
@@ -46,12 +46,20 @@
            
         </div>
         <div>
-            <form action="/profile/{{current_username}}" method="POST">
-                {% csrf_token %}  
-           	<textarea name="tweet"></textarea>
-		<br>
-                <input type="submit" value="TWEET (Max 140 chars)">
-            </form>
+	    <div class="tweetcard">
+                <div class="tweet_profile_pic">
+                    {% load static %}
+                    <img src="{% static 'app1/' %}{{current_user.profile.profile_pic}}">
+                </div>
+		<div class="tweet_content">
+            	    <form action="/profile/{{current_username}}" method="POST">
+                	{% csrf_token %}  
+           		<textarea name="tweet" placeholder="What's new?"></textarea>
+			<br>
+                	<input type="submit" value="TWEET (Max 140 chars)">
+            	    </form>
+		</div>
+	    </div>
         </div>
         <div>
             <div>
