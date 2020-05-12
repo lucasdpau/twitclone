@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Tweet, Profile
 import datetime
+import string
 
 # functions here.
 def parse_time(tweet_obj):
@@ -19,6 +20,23 @@ def parse_time(tweet_obj):
             time_diff_hrs = int(time_diff.seconds/3600)
             tweet_obj.datetime = str(time_diff_hrs) + "h"
 
+def get_tags(tweet_text):
+    prepared_text = (tweet_text + " ").lower()
+    tag_found = False
+    tag_list = []
+    current_tag = ""
+    for character in prepared_text:
+        if tag_found:
+            if character == " " or character in string.punctuation:
+                tag_found = False
+                tag_list.append(current_tag)
+            else:
+                current_tag += character
+        else:
+            if character == "#":
+                tag_found = True
+                current_tag = ""
+    return tag_list
 
 # Create your views here.
 

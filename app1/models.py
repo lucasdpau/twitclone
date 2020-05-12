@@ -19,6 +19,10 @@ class Tweet(models.Model):
     def __str__(self): #instead of printing [object at asdasd], this lets python know what to print
         return f"Tweet {self.id} {self.text} at {self.datetime} by {self.author} parent {self.parent_tweet}"
 
+class Tags(models.Model):
+    tagname = models.CharField(max_length=50)
+    tweets = models.ManyToManyField(Tweet)
+
 #class Follows(models.Model):
     #followed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     #following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
