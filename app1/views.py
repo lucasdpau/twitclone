@@ -151,6 +151,8 @@ def profile_view(request, profile_name):
         tweet_text = request.POST.get("tweet")
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user)
+            tweet_tag_list = get_tags(tweet_text)
+#TODO check tags, create if a new one is made, save it. then associate the two
             new_tweet.save()
         else:
             return HttpResponse("Char limit of 140 exceeded")
