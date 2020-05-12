@@ -4,23 +4,25 @@
     {%endblock%}
     {%block content%}
     <body>
-        <div>
+        <div class="centered">
             <div>
                 {{ message }}
             </div>
-            <div>
+            <h2>
                 Log in To FakeTwitter Here!
-            </div>
+            </h2>
             <div>
                 <form id="login_form" action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-                    <div>
-                        Username<input type="text" name="username">
-                    </div>
-                    <div>
-                        Password<input type="password" name="password">
-                    </div>
-                    <div>
+		    <div>
+			<div>
+                            <label for="username">Username</label><br>
+			    <input type="text" name="username" id="username">
+			</div>
+			<div>
+                            <label for="password">Password</label><br>
+			    <input type="password" name="password" id="password">
+			</div>
                         <input type="submit" value="Log in">
                     </div>
                 </form>

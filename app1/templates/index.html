@@ -5,9 +5,12 @@
     {%block content%}
     <body class="index_wrapper">
         <div>
-            <h1>
+            <h1 class="centered">
                 <a href="/profile/{{current_username}}">Hello {{ current_username }}! </a>
             </h1>
+	    <div class="centered">
+		Most recent posts
+	    </div>
             <div class="tweet_container">
                 {% for tweet in tweets %}
                     <div class="tweetcard">
