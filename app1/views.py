@@ -196,7 +196,16 @@ def reply_view(request, tweet_id):
         tweet_text = request.POST.get("tweet")
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
+            tweet_tag_list = get_tags(tweet_text)
             new_tweet.save()
+            for tags in tweet_tag_list:
+                existing_tag = Tags.objects.filter(tagname=tags)
+                if existing_tag:
+                    existing_tag[0].tweets.add(new_tweet)
+                else:
+                    new_tag = Tags(tagname=tags)
+                    new_tag.save()
+                    new_tag.tweets.add(new_tweet)
             parent_tweet.replies += 1
             parent_tweet.save()
             return HttpResponseRedirect(reverse("index"))
@@ -229,6 +238,10 @@ def delete_tweet(request, tweet_id):
 def tag_view(request, tag_name):
     current_user = request.user
     posts = Tweet.objects.filter(tags__tagname=tag_name)
-    return render(request, "tags.html", { "posts": posts, "current_username": current_user.username, })
+    tweet_list = []
+    for tweets in posts:
+        tweet_list.append(tweets)
+    tweet_list.reverse()
+    return render(request, "tags.html", { "posts": tweet_list, "current_username": current_user.username, })
     
     

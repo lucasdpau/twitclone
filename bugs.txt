@@ -1,0 +1,1 @@
+if you press enter after entering a hashtag the tag wont be saved
