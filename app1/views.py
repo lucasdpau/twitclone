@@ -3,7 +3,7 @@ from django.contrib.auth.models import User              #Allows us to create us
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Tweet, Profile
+from .models import Tweet, Profile, Tags
 import datetime
 import string
 
@@ -147,13 +147,22 @@ def settings_view(request):
     
     
 def profile_view(request, profile_name):
+    # NOTE: the tweet form in index has a POST route to this view.
     if request.method == "POST":  #if a form has been submitted then we add it to the database
         tweet_text = request.POST.get("tweet")
         if len(tweet_text) <= 140:
             new_tweet = Tweet(text=tweet_text, author=request.user)
             tweet_tag_list = get_tags(tweet_text)
-#TODO check tags, create if a new one is made, save it. then associate the two
             new_tweet.save()
+            for tags in tweet_tag_list:
+                existing_tag = Tags.objects.filter(tagname=tags)
+                if existing_tag:
+                    existing_tag[0].tweets.add(new_tweet)
+                else:
+                    new_tag = Tags(tagname=tags)
+                    new_tag.save()
+                    new_tag.tweets.add(new_tweet)
+#TODO check tags, create if a new one is made, save it. then associate the two
         else:
             return HttpResponse("Char limit of 140 exceeded")
     current_user = request.user

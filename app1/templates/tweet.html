@@ -27,7 +27,8 @@
                         {{parent.text}}
                     </div>
                     <div class="tweetfooter">
-                        <a href="/reply/{{parent.id}}">Reply!</a>   
+                        <a href="/reply/{{parent.id}}">Reply!</a>
+			<a href="/tweets/{{parent.id}}">View Parent Replies ({{parent.replies}})</a>    
                     </div>            
                 </div>
             </div> 
@@ -52,10 +53,11 @@
                         {{tweet.text}}
                     </div>
                     <div class="tweetfooter">
-                        <a href="/reply/{{tweet_id}}">Reply!</a>   
+                        <a href="/reply/{{tweet_id}}">Reply!</a>  
                     </div>            
                 </div>
             </div> 
+		CHILDREN BELOW HERE
             {% for child in child_tweets%}
             <div class="tweetcard">
                 <div class="tweet_profile_pic">
@@ -77,7 +79,8 @@
                         {{child.text}}
                     </div>
                     <div class="tweetfooter">
-                        <a href="/reply/{{child.id}}">Reply!</a>   
+                        <a href="/reply/{{child.id}}">Reply!</a>
+			<a href="/tweets/{{child.id}}">View Replies ({{child.replies}})</a>    
                     </div>            
                 </div>
             </div> 
