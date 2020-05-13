@@ -225,5 +225,10 @@ def delete_tweet(request, tweet_id):
         return HttpResponse("Deletion succesful.")
     else:
         return HttpResponse("You are not the author of this tweet.")
+
+def tag_view(request, tag_name):
+    current_user = request.user
+    posts = Tweet.objects.filter(tags__tagname=tag_name)
+    return render(request, "tags.html", { "posts": posts, "current_username": current_user.username, })
     
     
