@@ -27,9 +27,9 @@ class Tags(models.Model):
     #followed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     #following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-#class FavTweet(models.Model):
-    #TODO tweet = models.ForeignKey()     
-    #fav_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class FavTweet(models.Model):
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)     
+    fav_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #extend the builtin User model with onetoone
