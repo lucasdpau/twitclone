@@ -3,7 +3,7 @@ from django.contrib.auth.models import User              #Allows us to create us
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Tweet, Profile, Tags, FavTweet
+from .models import Tweet, Profile, Tags
 import datetime
 import string
 
@@ -247,5 +247,10 @@ def tag_view(request, tag_name):
 
 def fav_tweet_view(request, tweet_id):
     current_user = request.user
-    tweet = Tweet.objects.filter(id=tweet_id)[0]
     #check if tweet's already favorited. if not then add it to the database
+    pass
+
+def follow_view(request, profile_name):
+    current_user = request.user
+    #check if current_user is following profile_name, if not then add to db.
+    pass

@@ -23,19 +23,13 @@ class Tags(models.Model):
     tagname = models.CharField(max_length=50)
     tweets = models.ManyToManyField(Tweet)
 
-#class Follows(models.Model):
-    #followed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    #following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-class FavTweet(models.Model):
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)     
-    fav_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #extend the builtin User model with onetoone
     bio = models.CharField(max_length=300, default="I haven't written a bio yet!")
     profile_pic = models.CharField(max_length=140, default="green_square.jpg")
     location = models.CharField(max_length=60, default="Nowhere")
+    fav_tweets = models.ManyToManyField(Tweet)
+    following = models.ManyToManyField('Profile', related_name='followed_by')
     
     
 @receiver(post_save, sender=User)
