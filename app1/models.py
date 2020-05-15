@@ -29,6 +29,7 @@ class Profile(models.Model):
     profile_pic = models.CharField(max_length=140, default="green_square.jpg")
     location = models.CharField(max_length=60, default="Nowhere")
     fav_tweets = models.ManyToManyField(Tweet)
+    # Not sure if this works yet, since we had to put profile in quotes
     following = models.ManyToManyField('Profile', related_name='followed_by')
     
     
