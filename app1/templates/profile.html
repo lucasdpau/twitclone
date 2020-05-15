@@ -15,14 +15,25 @@
                         <img src="{% static 'app1/' %}{{profile_pic}}">
                 </div>
                 {% if not is_own_profile %}
+                {% if already_following %}
+                <div class="profile_unfollow_button">
+		    <form>
+			{% csrf_token %}
+                    	<button type="submit" value="unfollow" name="unfollow">
+                        	Unfollow {{profile_name}} !
+                    	</button>
+		    </form>
+                </div>
+                {% else %}
                 <div class="profile_follow_button">
 		    <form action="/follow/{{profile_name}}" method="POST">
 			{% csrf_token %}
-                    	<button type="submit">
+                    	<button type="submit" value="follow" name="follow">
                         	Follow {{profile_name}} !
                     	</button>
 		    </form>
                 </div>
+                {% endif %}
                 {% endif %}
             </div>
             <div class="profile_info">

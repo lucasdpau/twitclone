@@ -162,9 +162,9 @@ def profile_view(request, profile_name):
                     new_tag = Tags(tagname=tags)
                     new_tag.save()
                     new_tag.tweets.add(new_tweet)
-#TODO check tags, create if a new one is made, save it. then associate the two
         else:
             return HttpResponse("Char limit of 140 exceeded")
+
     current_user = request.user
     current_username = request.user.username
     if profile_name == current_username:
@@ -188,9 +188,19 @@ def profile_view(request, profile_name):
     profile_date_joined = user_model_object.date_joined
 
     followers = Profile.objects.filter(following=user_model_object.profile)
-    for x in followers:
-        print(x.user.username)
-    return render(request, "profile.html", { "current_user": current_user, "profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined, "followers": followers, })
+    if current_user.profile in followers:
+        already_following = True
+    else:
+        already_following = False
+
+    context = { "current_user": current_user, "profile_name": profile_name, 
+"tweets":tweet_list, "current_username":current_username, 
+"is_own_profile":is_own_profile, "profile_bio":profile_bio, 
+"profile_pic":profile_pic, "profile_location":profile_location, 
+"profile_date_joined": profile_date_joined, "followers": followers, 
+"already_following": already_following, }
+
+    return render(request, "profile.html", context)
 
 def reply_view(request, tweet_id):
     current_username = request.user.username
