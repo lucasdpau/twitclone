@@ -16,9 +16,12 @@
                 </div>
                 {% if not is_own_profile %}
                 <div class="profile_follow_button">
-                    <button type="button">
-                        Follow!
-                    </button>
+		    <form action="/follow/{{profile_name}}" method="POST">
+			{% csrf_token %}
+                    	<button type="submit">
+                        	Follow {{profile_name}} !
+                    	</button>
+		    </form>
                 </div>
                 {% endif %}
             </div>
@@ -38,7 +41,8 @@
                 	</div>
 		</div>
                 <div class="profile_followers">
-                    Followers:
+                    Followers: {% for profile in followers %}{{ profile.user.username }}, 
+                    {% endfor %}
                 </div>
             </div>
             <div class="tweet_container">

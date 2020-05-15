@@ -171,6 +171,7 @@ def profile_view(request, profile_name):
         is_own_profile = True
     else:
         is_own_profile = False
+
     #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name)
     tweet_list = []
@@ -185,7 +186,11 @@ def profile_view(request, profile_name):
     profile_pic = user_model_object.profile.profile_pic
     profile_location = user_model_object.profile.location
     profile_date_joined = user_model_object.date_joined
-    return render(request, "profile.html", { "current_user": current_user, "profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined })
+
+    followers = Profile.objects.filter(following=user_model_object.profile)
+    for x in followers:
+        print(x.user.username)
+    return render(request, "profile.html", { "current_user": current_user, "profile_name": profile_name, "tweets":tweet_list, "current_username":current_username, "is_own_profile":is_own_profile, "profile_bio":profile_bio, "profile_pic":profile_pic, "profile_location":profile_location, "profile_date_joined": profile_date_joined, "followers": followers, })
 
 def reply_view(request, tweet_id):
     current_username = request.user.username
@@ -251,6 +256,17 @@ def fav_tweet_view(request, tweet_id):
     pass
 
 def follow_view(request, profile_name):
-    current_user = request.user
-    #check if current_user is following profile_name, if not then add to db.
-    pass
+  #check if current_user is following profile_name, if not then add to db.
+    if request.method == 'POST':
+        current_user = Profile.objects.get(user__username=request.user.username)
+        users_followed_by_current_user = Profile.objects.filter(followed_by=current_user)
+        user_tobe_followed = Profile.objects.get(user__username=profile_name)
+        if user_tobe_followed in users_followed_by_current_user:
+            print("already following {}".format(profile_name))
+        else:
+            print("not x, so now you follow {}".format(profile_name))
+            current_user.following.add(user_tobe_followed) 
+        print(current_user.following)
+        return HttpResponse("Hi")
+    else:
+        return HttpResponse("dont get this")
