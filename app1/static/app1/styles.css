@@ -119,6 +119,10 @@ a {
 	font-weight: bold;
 }
 
+.tweet_author a:hover {
+	text-decoration: underline;
+}
+
 .tweet_text {
 }
 

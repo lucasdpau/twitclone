@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout #import djangos builtin authentication library
 from django.contrib.auth.models import User              #Allows us to create users and save to the DB
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .models import Tweet, Profile, Tags
 import datetime
@@ -278,7 +278,23 @@ def follow_view(request, profile_name):
         else:
             print("not x, so now you follow {}".format(profile_name))
             current_user.following.add(user_tobe_followed) 
-        print(current_user.following)
         return HttpResponse("Hi")
+
+    elif request.method == "GET":
+        user_profile = Profile.objects.get(user__username=profile_name)
+        users_followed_by_user = user_profile.following.all()
+        followers_of_user = Profile.objects.filter(following=user_profile)
+        list_of_followers = []
+        list_of_followed_by_user = []
+        for users in users_followed_by_user:
+            list_of_followed_by_user.append(users.user.username)
+        for users in followers_of_user:
+            list_of_followers.append(users.user.username)
+        follow_json = {}
+        follow_json["followers"] = list_of_followers
+        follow_json["following"] = list_of_followed_by_user
+
+        return JsonResponse(follow_json)
+
     else:
-        return HttpResponse("dont get this")
+        return HttpResponse("No")
