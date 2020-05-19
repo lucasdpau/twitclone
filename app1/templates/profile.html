@@ -17,9 +17,9 @@
                 {% if not is_own_profile %}
                 {% if already_following %}
                 <div class="profile_unfollow_button">
-		    <form>
+		    <form action="/follow/{{profile_name}}" method="POST">
 			{% csrf_token %}
-                    	<button type="submit" value="unfollow" name="unfollow">
+                    	<button type="submit" value="unfollow" name="follow">
                         	Unfollow {{profile_name}} !
                     	</button>
 		    </form>
