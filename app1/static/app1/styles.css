@@ -4,8 +4,12 @@
 }
 
 header {
-    background-color: skyblue;
+	color: rgb(29, 161, 242);
 	text-align: center;
+}
+
+header a {
+	color: rgb(29, 161, 242);
 }
 
 
@@ -18,6 +22,10 @@ textarea {
 	max-width: 400px;
 	height: 100px;
 	resize: none;
+}
+
+a {
+	color: rgb(29, 161, 242);
 }
 
 .centered {
@@ -81,7 +89,7 @@ textarea {
 }
 
 .tweet_content {
-	max-width: 100%;
+	max-width: calc(100% - 74px);
 	padding-left: 10px; 
 	flex-grow: 1;
 }
@@ -92,6 +100,11 @@ textarea {
 
 .tweet_content_header * {
     display: inline;
+}
+
+.tweet_content_text {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 }
 
 .tweet_author {
