@@ -10,9 +10,9 @@
                 <div class="profile_banner">
 
                 </div>
-                <div class="profile_pic">
+                <div class="profile_pic_wrapper">
                     {% load static %}
-                        <img src="{% static 'app1/' %}{{profile_pic}}">
+                        <img src="{% static 'app1/' %}{{profile_pic}}" class="profile_pic">
                 </div>
                 {% if not is_own_profile %}
                 {% if already_following %}
@@ -62,7 +62,7 @@
                         <div class="tweet_profile_pic">
                             {% load static %}
                             <a href="../profile/{{tweet.author}}">
-                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}" class="profile_pic">
                             </a>
                         </div>
                         <div class="tweet_content">
@@ -88,14 +88,12 @@
                     </div>
                     {% endfor %}
             </div>
-            <br>
-            is own profile: {{is_own_profile}}
         </div>
         <div>
 	    <div class="tweetcard">
                 <div class="tweet_profile_pic">
                     {% load static %}
-                    <img src="{% static 'app1/' %}{{current_user.profile.profile_pic}}">
+                    <img src="{% static 'app1/' %}{{current_user.profile.profile_pic}}" class="profile_pic">
                 </div>
 		<div class="tweet_content">
             	    <form action="/profile/{{current_username}}" method="POST">

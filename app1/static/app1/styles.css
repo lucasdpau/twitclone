@@ -72,6 +72,12 @@ a {
 	padding-bottom: 0.5em;
 }
 
+.profile_pic {	
+	border-radius: 100px;
+	border-color: white;
+	border-style: solid;
+}
+
 .profile_bio {
 	padding-bottom: 0.5em;
 }

@@ -6,7 +6,7 @@
     <body class="index_wrapper">
         <div>
             <h1 class="centered">
-                <a href="/profile/{{current_username}}">Hello {{ current_username }}! </a>
+                <a href="/profile/{{ current_username }}">Hello {{ current_username }}! </a>
             </h1>
 	    <div class="centered">
 		Most recent posts
@@ -17,7 +17,7 @@
                         <div class="tweet_profile_pic">
                             {% load static %}
                             <a href="profile/{{tweet.author}}">
-                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}">
+                                <img src="{% static 'app1/' %}{{tweet.author.profile.profile_pic}}" class="profile_pic">
                             </a>
                         </div>
                         <div class="tweet_content">
