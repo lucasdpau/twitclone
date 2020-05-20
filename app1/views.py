@@ -29,7 +29,10 @@ def get_tags(tweet_text):
         if tag_found:
             if character == " " or character in string.punctuation:
                 tag_found = False
-                tag_list.append(current_tag)
+                if len(current_tag) > 50:
+                    pass
+                else:
+                    tag_list.append(current_tag)
             else:
                 current_tag += character
         else:
@@ -63,7 +66,9 @@ def index(request):
     authenticated_username = request.user.username
     for tweet in tweetlist:
         parse_time(tweet)
-            
+    #package a list of the tweets tags into the tweet object
+        tweet.tag_list = tweet.tags_set.all()
+
     return render(request, "index.html", {"tweets": tweetlist, "current_user": current_user, "current_username":current_username})
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
@@ -201,6 +206,15 @@ def profile_view(request, profile_name):
 "already_following": already_following, }
 
     return render(request, "profile.html", context)
+
+def profile_fav_view(request, profile_name): 
+    current_user = request.user
+    if profile_name == current_user.username:
+        is_own_profile = True
+    else:
+        is_own_profile = False
+
+    #return a list of profile_name's fav tweets
 
 def reply_view(request, tweet_id):
     current_username = request.user.username

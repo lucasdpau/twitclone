@@ -39,6 +39,11 @@
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
                             </div>
+                            <div>
+                                {% for tag in tweet.tag_list %}
+                                    <a href="tags/{{ tag.tagname }}">#{{ tag.tagname }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
