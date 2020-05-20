@@ -186,6 +186,9 @@ def profile_view(request, profile_name):
     tweet_list.reverse()
     for tweet in tweet_list:
         parse_time(tweet)
+    #package a list of the tweets tags into the tweet object
+        tweet.tag_list = tweet.tags_set.all()
+
     user_model_object = User.objects.get(username=profile_name)
     profile_bio = user_model_object.profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
     profile_pic = user_model_object.profile.profile_pic
@@ -247,6 +250,8 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     current_username = request.user.username
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
+    parse_time(tweet)
+    tweet.tag_list = tweet.tags_set.all()
     parent_tweet = Tweet.objects.filter(id=tweet.parent_tweet)
     #get all tweets who have their parent tweet as this tweet.
     child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   

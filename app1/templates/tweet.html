@@ -54,7 +54,12 @@
                     </div>
                     <div class="tweetfooter">
                         <a href="/reply/{{tweet_id}}">Reply!</a>  
-                    </div>            
+                    </div>  
+                    <div>
+                        {% for tag in tweet.tag_list %}
+                             <a href="tags/{{ tag.tagname }}">#{{ tag.tagname }}</a>
+                        {% endfor %}
+                    </div>          
                 </div>
             </div> 
 		CHILDREN BELOW HERE
