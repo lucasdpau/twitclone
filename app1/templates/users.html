@@ -1,0 +1,30 @@
+{%extends "basetemplate.html" %}
+    {%block title %}
+        <title>Main Page</title>
+    {%endblock%}
+    {%block content%}
+    <body class="index_wrapper">
+        <div class="user_list_wrapper">
+            {% for user in user_list %}
+                <div class="user_card">
+                    <div class="profile_pic_wrapper">
+                    {% load static %}
+                        <img src="{% static 'app1/' %}{{user.profile.profile_pic}}" class="profile_pic">
+                    </div>
+                    <div class="user_username">
+                        {{ user.username }} 
+                    </div>
+                    <div class="user_bio">
+                        {{ user.profile.bio }}
+                    </div>
+                    <div>
+                        Follow button!
+                    </div>
+                    <div>
+                        Tweets/stats here
+                    </div>
+                </div>
+            {% endfor %} 
+        </div>
+    </body>
+    {%endblock%}

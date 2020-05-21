@@ -172,3 +172,27 @@ a {
 .tweet_footer * {
     display: inline;
 }
+
+.user_list_wrapper {
+	display:flex;
+	flex-wrap: wrap;
+        justify-content: center;
+	text-align: center;
+}
+
+.user_card {
+	width: 250px;
+	border: solid;
+}
+
+.user_username {
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.user_bio {
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}

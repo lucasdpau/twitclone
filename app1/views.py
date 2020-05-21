@@ -339,3 +339,12 @@ def like_unlike(request, tweet_id):
         for tweets in tweets_liked_by_current_user:
             response["tweets_liked_by_current_user"].append(tweets.text)
         return JsonResponse(response)
+
+def users_view(request):
+    all_users = User.objects.all()
+    user_list = []
+    for item in all_users:
+        user_list.append(item)
+    json_response = {"userlist":user_list}
+    print(json_response)
+    return render(request, "users.html", {"user_list": user_list, })
