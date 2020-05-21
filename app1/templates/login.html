@@ -26,13 +26,14 @@
 			<div>
                			<a href="FORGOTPASSWORD">Forgot Password?</a>
 			</div>
-                        <input class="button" type="submit" value="Log in">
+			<div>
+	                	<input class="button" type="submit" value="Log in">
+			</div>
+			<div class="register_button_wrapper">
+				<a class="register_button" href="{% url 'register' %}">Register!</a>
+			</div>
                     </div>
                 </form>
-            </div>
-
-            <div class="register_button">
-                <a href="{% url 'register' %}">Register!</a>
             </div>
             <div>
                 <a href="{% url 'index' %}">Home</a>

@@ -53,24 +53,26 @@ a {
 	transition: 0.2s;
 }
 
+
+.register_button_wrapper {
+	margin: 1em;
+}
+
 .register_button {
 	padding: 0.75em;
-	margin: 0 auto;
 	width: 100px;
 	background-color: rgb(29, 161, 242);
 	color: white;
 	border-radius: 100px;
+	border-color: rgb(29, 161, 242);
+	border-style: solid;
 	font-weight: bold;
-}
-
-
-.register_button a {
-	color: white;
 	text-decoration: none;
 }
 
 .register_button:hover {
 	background-color: rgba(25, 131, 202, 0.9);
+	border-color: rgba(25, 131, 202, 0.9);
 	transition: 0.2s;
 }
 
