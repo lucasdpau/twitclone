@@ -23,15 +23,16 @@
                             <label for="password">Password</label><br>
 			    <input type="password" name="password" id="password">
 			</div>
-                        <input type="submit" value="Log in">
+			<div>
+               			<a href="FORGOTPASSWORD">Forgot Password?</a>
+			</div>
+                        <input class="button" type="submit" value="Log in">
                     </div>
                 </form>
             </div>
-            <div>
-                <a href="FORGOTPASSWORD">Forgot Password?</a>
-            </div>
-            <div>
-                <a href="{% url 'register' %}">Register here!</a>
+
+            <div class="register_button">
+                <a href="{% url 'register' %}">Register!</a>
             </div>
             <div>
                 <a href="{% url 'index' %}">Home</a>

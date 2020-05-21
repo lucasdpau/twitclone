@@ -19,7 +19,7 @@
                 <div class="profile_unfollow_button">
 		    <form action="/follow/{{profile_name}}" method="POST">
 			{% csrf_token %}
-                    	<button type="submit" value="unfollow" name="follow">
+                    	<button class="button" type="submit" value="unfollow" name="follow">
                         	Unfollow
                     	</button>
 		    </form>
@@ -28,7 +28,7 @@
                 <div class="profile_follow_button">
 		    <form action="/follow/{{profile_name}}" method="POST">
 			{% csrf_token %}
-                    	<button type="submit" value="follow" name="follow">
+                    	<button class="button" type="submit" value="follow" name="follow">
                         	Follow
                     	</button>
 		    </form>

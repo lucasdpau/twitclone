@@ -54,6 +54,7 @@ def index(request):
         return render(request, "login.html", {}) #renders from the templates folder in the app folder
     current_user = request.user
     current_username = request.user.username  
+    current_user_profile = Profile.objects.get(user__username=current_username)
     # add all queried objects to a list
     tweetlist = []
     for items in Tweet.objects.all():
@@ -64,10 +65,13 @@ def index(request):
     if len(tweetlist) > 5:
         tweetlist = tweetlist[:5]
     authenticated_username = request.user.username
+    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
     for tweet in tweetlist:
         parse_time(tweet)
     #package a list of the tweets tags into the tweet object
         tweet.tag_list = tweet.tags_set.all()
+        if tweet in tweets_liked_by_current_user:
+            tweet.is_liked_by_current_user = True
 
     return render(request, "index.html", {"tweets": tweetlist, "current_user": current_user, "current_username":current_username})
 
@@ -317,3 +321,21 @@ def follow_view(request, profile_name):
 
     else:
         return HttpResponse("No")
+
+def like_unlike(request, tweet_id):
+    current_user_profile = Profile.objects.get(user__username=request.user.username)
+    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+    if request.method == 'POST':
+        current_tweet = Tweet.objects.get(id=tweet_id)
+        if current_tweet in tweets_liked_by_current_user:
+            print('removing')
+            current_user_profile.liked_tweets.remove(current_tweet)
+        else:
+            print('adding')
+            current_user_profile.liked_tweets.add(current_tweet)
+        return HttpResponse("yes")
+    else:
+        response = {"tweets_liked_by_current_user":[]}
+        for tweets in tweets_liked_by_current_user:
+            response["tweets_liked_by_current_user"].append(tweets.text)
+        return JsonResponse(response)

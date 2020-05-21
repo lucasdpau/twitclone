@@ -18,5 +18,6 @@ urlpatterns = [
     path("delete/<int:tweet_id>", views.delete_tweet, name="delete"),
     path("tags/<tag_name>", views.tag_view, name="tags"),  
     path("fav/<int:tweet_id>", views.fav_tweet_view, name="fav"),
-    path("follow/<profile_name>", views.follow_view, name="follow"),     
+    path("follow/<profile_name>", views.follow_view, name="follow"),
+    path("like/<int:tweet_id>", views.like_unlike, name="likeunlike"), 
     ] 
