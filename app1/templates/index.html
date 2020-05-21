@@ -41,14 +41,14 @@
                                 {% if tweet.is_liked_by_current_user %}
                                     <form action="like/{{tweet.id}}" method="POST">
                                         {% csrf_token %}
-                                        <button class="button" type="submit" value="unlike" name="likebutton">
+                                        <button class="button unlike_button" type="submit" value="unlike" name="likebutton">
                                         Unlike
                                         </button>
                                     </form>
                                 {% else %}                                    
                                     <form action="like/{{tweet.id}}" method="POST">
                                         {% csrf_token %}
-                                        <button class="button" type="submit" value="like" name="likebutton">
+                                        <button class="button like_button" type="submit" value="like" name="likebutton">
                                         Like
                                         </button>
                                     </form>

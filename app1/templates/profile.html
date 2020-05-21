@@ -41,14 +41,14 @@
                     {{profile_name}}'s profile
                 </div>
                 <div class="profile_bio">
-                    {{profile_bio}}
+                    {{user_object.profile.bio}}
                 </div>
 		<div class="profile_other_info">
                	 	<div class="profile_location">
-                   		Location: {{ profile_location }}
+                   		Location: {{ user_object.profile.location }}
                 	</div>
                 	<div class="profile_joindate">
-                    		Joined: {{ profile_date_joined }}
+                    		Joined: {{ user_object.date_joined }}
                 	</div>
 		</div>
                 <div class="profile_followers">
@@ -83,6 +83,21 @@
 				{% if is_own_profile %}
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
+                                {% if tweet.is_liked_by_current_user %}
+                                    <form action="/like/{{tweet.id}}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="button unlike_button" type="submit" value="unlike" name="likebutton">
+                                        Unlike
+                                        </button>
+                                    </form>
+                                {% else %}                                    
+                                    <form action="/like/{{tweet.id}}" method="POST">
+                                        {% csrf_token %}
+                                        <button class="button like_button" type="submit" value="like" name="likebutton">
+                                        Like
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                             <div>
                                 {% for tag in tweet.tag_list %}

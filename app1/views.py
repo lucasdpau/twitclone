@@ -176,6 +176,8 @@ def profile_view(request, profile_name):
 
     current_user = request.user
     current_username = request.user.username
+    current_user_profile = Profile.objects.get(user__username=current_username)
+    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
     if profile_name == current_username:
         is_own_profile = True
     else:
@@ -192,12 +194,11 @@ def profile_view(request, profile_name):
         parse_time(tweet)
     #package a list of the tweets tags into the tweet object
         tweet.tag_list = tweet.tags_set.all()
+        if tweet in tweets_liked_by_current_user:
+            tweet.is_liked_by_current_user = True
 
     user_model_object = User.objects.get(username=profile_name)
-    profile_bio = user_model_object.profile.bio #TODO Bio can't be found if no profile bio, default doesnt work on test!
     profile_pic = user_model_object.profile.profile_pic
-    profile_location = user_model_object.profile.location
-    profile_date_joined = user_model_object.date_joined
 
     followers = Profile.objects.filter(following=user_model_object.profile)
     if current_user.profile in followers:
@@ -207,9 +208,8 @@ def profile_view(request, profile_name):
 
     context = { "current_user": current_user, "profile_name": profile_name, 
 "tweets":tweet_list, "current_username":current_username, 
-"is_own_profile":is_own_profile, "profile_bio":profile_bio, 
-"profile_pic":profile_pic, "profile_location":profile_location, 
-"profile_date_joined": profile_date_joined, "followers": followers, 
+"user_object": user_model_object, "is_own_profile":is_own_profile,  
+"profile_pic":profile_pic, "followers": followers, 
 "already_following": already_following, }
 
     return render(request, "profile.html", context)
