@@ -31,6 +31,10 @@ a {
 	text-align: center;
 }
 
+.login_page {
+	padding-top: 50px;
+}
+
 .index_wrapper {
 	max-width: 600px;
 	margin-left: auto;

@@ -1,9 +1,12 @@
-{%extends "basetemplate.html" %}
-    {%block title %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{% static 'app1/styles.css' %}">
         <title>Login</title>
-    {%endblock%}
-    {%block content%}
-    <body>
+    </head>
+    <body class="login_page">
         <div class="centered">
             <div>
                 {{ message }}
@@ -41,4 +44,4 @@
             
         </div>
     </body>
-{%endblock%}
+</html>

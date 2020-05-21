@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout #import djangos builtin authentication library
 from django.contrib.auth.models import User              #Allows us to create users and save to the DB
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -91,12 +92,14 @@ def login_view(request):  #if we name this function 'login', it will be the same
     #Else if a HTTP GET request is made
     else:
         return render(request, "login.html")
-    
+
+@login_required 
 def logout_view(request):
     #Django has built in logout and login functions, so we dont have to code it manually like in flask
     logout(request)
     return render(request, "login.html", {"message":"Logged out."})
     
+
 def register(request):
     if request.method == "POST":
         username = request.POST.get("username").lower()
@@ -128,6 +131,7 @@ def register(request):
     else:
         return render(request, "register.html")
 
+@login_required
 def settings_view(request):
     current_username = request.user.username
     user_model_object = User.objects.get(username=current_username)
@@ -154,7 +158,7 @@ def settings_view(request):
     
     return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio, "profile_date_joined": profile_date_joined  })
     
-    
+@login_required   
 def profile_view(request, profile_name):
     # NOTE: the tweet form in index has a POST route to this view.
     if request.method == "POST":  #if a form has been submitted then we add it to the database
@@ -214,6 +218,7 @@ def profile_view(request, profile_name):
 
     return render(request, "profile.html", context)
 
+@login_required
 def profile_fav_view(request, profile_name): 
     current_user = request.user
     if profile_name == current_user.username:
@@ -223,6 +228,7 @@ def profile_fav_view(request, profile_name):
 
     #return a list of profile_name's fav tweets
 
+@login_required
 def reply_view(request, tweet_id):
     current_username = request.user.username
     #tweet_id is the int in the url reply/<int:tweet_id>
@@ -250,6 +256,7 @@ def reply_view(request, tweet_id):
     
     return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "tweet": parent_tweet})
 
+
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     current_username = request.user.username
     return_string = str(tweet_id)
@@ -262,6 +269,8 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     return render(request, "tweet.html", {"current_username": current_username, "tweet":tweet, "tweet_text": tweet.text, 
                                           "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 
 
+
+@login_required
 def delete_tweet(request, tweet_id):
     tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.user.username == tweet.author.username:
@@ -273,6 +282,7 @@ def delete_tweet(request, tweet_id):
     else:
         return HttpResponse("You are not the author of this tweet.")
 
+@login_required
 def tag_view(request, tag_name):
     current_user = request.user
     posts = Tweet.objects.filter(tags__tagname=tag_name)
@@ -282,12 +292,14 @@ def tag_view(request, tag_name):
     tweet_list.reverse()
     return render(request, "tags.html", { "posts": tweet_list, "current_username": current_user.username, })
     
-
+@login_required
 def fav_tweet_view(request, tweet_id):
     current_user = request.user
     #check if tweet's already favorited. if not then add it to the database
     pass
 
+
+@login_required
 def follow_view(request, profile_name):
   #check if current_user is following profile_name, if not then add to db.
     if request.method == 'POST':
@@ -322,6 +334,7 @@ def follow_view(request, profile_name):
     else:
         return HttpResponse("No")
 
+@login_required
 def like_unlike(request, tweet_id):
     current_user_profile = Profile.objects.get(user__username=request.user.username)
     tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
@@ -339,6 +352,7 @@ def like_unlike(request, tweet_id):
         for tweets in tweets_liked_by_current_user:
             response["tweets_liked_by_current_user"].append(tweets.text)
         return JsonResponse(response)
+
 
 def users_view(request):
     all_users = User.objects.all()
