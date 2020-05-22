@@ -3,12 +3,13 @@
         <title>Main Page</title>
     {%endblock%}
     {%block content%}
+    {% load static %}
     <body class="index_wrapper">
         <div>
             <h1 class="centered">
                 <a href="/profile/{{ current_username }}">Hello {{ current_username }}! </a>
             </h1>
-	    <div class="centered">
+	    <div class="centered" id="jstest">
 		Most recent posts
 	    </div>
             <div class="tweet_container">
@@ -76,7 +77,7 @@
                 	{% csrf_token %}  
            		<textarea name="tweet" placeholder="What's new?"></textarea>
 			<br>
-                	<input type="submit" value="TWEET (Max 140 chars)">
+                	<input class="register_button" type="submit" value="Tweet">
             	    </form>
 		</div>
 	    </div>
@@ -87,4 +88,5 @@
             </div>   
         </div>
     </body>
+    <script src="{% static 'app1/' %}main.js"></script>
     {%endblock%}

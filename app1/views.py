@@ -163,7 +163,7 @@ def profile_view(request, profile_name):
     # NOTE: the tweet form in index has a POST route to this view.
     if request.method == "POST":  #if a form has been submitted then we add it to the database
         tweet_text = request.POST.get("tweet")
-        if len(tweet_text) <= 140:
+        if len(tweet_text) <= 140 and len(tweet_text) > 0:
             new_tweet = Tweet(text=tweet_text, author=request.user)
             tweet_tag_list = get_tags(tweet_text)
             new_tweet.save()
@@ -236,7 +236,7 @@ def reply_view(request, tweet_id):
     parent_tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.method == "POST":
         tweet_text = request.POST.get("tweet")
-        if len(tweet_text) <= 140:
+        if len(tweet_text) <= 140 and len(tweet_text) > 0:
             new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
             tweet_tag_list = get_tags(tweet_text)
             new_tweet.save()
@@ -285,7 +285,7 @@ def delete_tweet(request, tweet_id):
 @login_required
 def tag_view(request, tag_name):
     current_user = request.user
-    posts = Tweet.objects.filter(tags__tagname=tag_name)
+    posts = Tweet.objects.filter(tags__tagname=tag_name, is_deleted=False)
     tweet_list = []
     for tweets in posts:
         tweet_list.append(tweets)
