@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout #import djangos builtin authentication library
 from django.contrib.auth.models import User              #Allows us to create users and save to the DB
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -328,22 +329,23 @@ def follow_view(request, profile_name):
         return HttpResponse("No")
 
 @login_required
+@csrf_exempt
 def like_unlike(request, tweet_id):
     current_user_profile = Profile.objects.get(user__username=request.user.username)
     tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
     if request.method == 'POST':
-        like_or_unlike = request.POST.get("likebutton")
-        print(like_or_unlike)
+        like_or_unlike = request.POST.get("likeunlike")
+        print(like_or_unlike, request.POST)
         current_tweet = Tweet.objects.get(id=tweet_id)
         if current_tweet in tweets_liked_by_current_user and like_or_unlike == "unlike":
             print('removing')
             current_user_profile.liked_tweets.remove(current_tweet)
-            return HttpResponse("yes")
+            return HttpResponse("Like")
 
         elif not current_tweet in tweets_liked_by_current_user and like_or_unlike == "like":
             print('adding')
             current_user_profile.liked_tweets.add(current_tweet)
-            return HttpResponse("yes")
+            return HttpResponse("Unlike")
 
         else:
             print('error, nothing saved to db')

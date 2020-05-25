@@ -19,17 +19,18 @@ ajaxTestButton.addEventListener("click", function() {
 
 
 
-var likeTweet = function(tweet_like_button) {
-	console.log(tweet_like_button.tweet_id);
+var likeTweet = function(tweet_like_button, like_unlike) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		console.log(this.responseText);
 		tweet_like_button.innerHTML = this.responseText;
+		console.log(this.responseText);
+		console.log(tweet_like_button.setAttribute("value", this.responseText.toLowerCase()));
 		}
 	};
 	xhttp.open("POST", "/like/" + tweet_like_button.tweet_id, true);
-	xhttp.send();
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("likeunlike=" + like_unlike);
 }
 
 
@@ -39,7 +40,7 @@ for (var i=0; i<likeButtons.length; i++) {
 	(function(index) {
 		likeButtons[index].tweet_id = likeButtons[index].getAttribute("id").substr(10);
 		likeButtons[index].addEventListener("click", function() {
-			likeTweet(likeButtons[index]);
+			likeTweet(likeButtons[index], likeButtons[index].getAttribute("value"));
 		})
 	})(i);
 }
@@ -50,7 +51,7 @@ for (var i=0; i<unlikeButtons.length; i++) {
 	(function(index) {
 		unlikeButtons[index].tweet_id = unlikeButtons[index].getAttribute("id").substr(10);
 		unlikeButtons[index].addEventListener("click", function() {
-			likeTweet(unlikeButtons[index]);
+			likeTweet(unlikeButtons[index], unlikeButtons[index].getAttribute("value"));
 		})
 	})(i);
 }
