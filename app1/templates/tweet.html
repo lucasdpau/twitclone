@@ -61,6 +61,14 @@
                         {% endfor %}
                     </div>          
                 </div>
+            </div>
+            <div>
+                <form action="/tweets/{{tweet_id}}" method="POST">
+                    {% csrf_token %} 
+                    <textarea name="tweet" placeholder="What's new?"></textarea>
+			<br>
+                    <input class="register_button" type="submit" value="Tweet">
+                </form>
             </div> 
 		CHILDREN BELOW HERE
             {% for child in child_tweets%}

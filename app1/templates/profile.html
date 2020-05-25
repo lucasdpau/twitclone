@@ -78,7 +78,6 @@
                                 {{ tweet.text }}
                             </div>
                             <div class="tweet_footer">
-                                <a href="/reply/{{tweet.id}}">Reply!</a>
                                 <a href="/tweets/{{tweet.id}}">View Replies ({{tweet.replies}})</a>
 				{% if is_own_profile %}
 				<a href="/delete/{{tweet.id}}">Delete</a>

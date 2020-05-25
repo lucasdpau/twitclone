@@ -229,15 +229,20 @@ def profile_fav_view(request, profile_name):
     #return a list of profile_name's fav tweets
 
 @login_required
-def reply_view(request, tweet_id):
+def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     current_username = request.user.username
-    #tweet_id is the int in the url reply/<int:tweet_id>
-    parent = tweet_id
-    parent_tweet = Tweet.objects.filter(id=tweet_id)[0]
+    return_string = str(tweet_id)
+    tweet = Tweet.objects.get(id=tweet_id)
+    parse_time(tweet)
+    tweet.tag_list = tweet.tags_set.all()
+    parent_tweet = Tweet.objects.filter(id=tweet.parent_tweet)
+    #get all tweets who have their parent tweet as this tweet.
+    child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)
+
     if request.method == "POST":
         tweet_text = request.POST.get("tweet")
         if len(tweet_text) <= 140 and len(tweet_text) > 0:
-            new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=parent)
+            new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=tweet.id)
             tweet_tag_list = get_tags(tweet_text)
             new_tweet.save()
             for tags in tweet_tag_list:
@@ -248,24 +253,12 @@ def reply_view(request, tweet_id):
                     new_tag = Tags(tagname=tags)
                     new_tag.save()
                     new_tag.tweets.add(new_tweet)
-            parent_tweet.replies += 1
-            parent_tweet.save()
+            tweet.replies += 1
+            tweet.save()
             return HttpResponseRedirect(reverse("index"))
         else:
             return HttpResponse("Char limit of 140 exceeded")
-    
-    return render(request, "reply.html", {"current_username": current_username, "tweet_id": parent, "tweet": parent_tweet})
-
-
-def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
-    current_username = request.user.username
-    return_string = str(tweet_id)
-    tweet = Tweet.objects.get(id=tweet_id)
-    parse_time(tweet)
-    tweet.tag_list = tweet.tags_set.all()
-    parent_tweet = Tweet.objects.filter(id=tweet.parent_tweet)
-    #get all tweets who have their parent tweet as this tweet.
-    child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)   
+   
     return render(request, "tweet.html", {"current_username": current_username, "tweet":tweet, "tweet_text": tweet.text, 
                                           "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 
 
