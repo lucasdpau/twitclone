@@ -195,6 +195,8 @@ def profile_view(request, profile_name):
         if not items.is_deleted:
             tweet_list.append(items)
     tweet_list.reverse()
+    if len(tweet_list) > 5:
+        tweet_list = tweet_list[:5]
     for tweet in tweet_list:
         parse_time(tweet)
     #package a list of the tweets tags into the tweet object

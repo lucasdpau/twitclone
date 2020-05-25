@@ -175,6 +175,10 @@ a {
 .tweet_text {
 }
 
+.tweet_footer {
+    margin-top: 20px;
+}
+
 .tweet_footer * {
     display: inline;
 }
