@@ -39,19 +39,13 @@
 				    <a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
                                 {% if tweet.is_liked_by_current_user %}
-                                    <form action="like/{{tweet.id}}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="button unlike_button" type="submit" value="unlike" name="likebutton">
+                                        <div class="button unlike_button" type="submit" value="unlike" name="likebutton" id="likebutton{{tweet.id}}">
                                         Unlike
-                                        </button>
-                                    </form>
+                                        </div>
                                 {% else %}                                    
-                                    <form action="like/{{tweet.id}}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="button like_button" type="submit" value="like" name="likebutton">
+                                    <div class="button like_button" type="submit" value="like" name="likebutton" id="likebutton{{tweet.id}}">
                                         Like
-                                        </button>
-                                    </form>
+                                    </div>
                                 {% endif %}
                             </div>
                             <div>

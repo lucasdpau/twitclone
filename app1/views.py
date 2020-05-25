@@ -332,13 +332,21 @@ def like_unlike(request, tweet_id):
     current_user_profile = Profile.objects.get(user__username=request.user.username)
     tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
     if request.method == 'POST':
+        like_or_unlike = request.POST.get("likebutton")
+        print(like_or_unlike)
         current_tweet = Tweet.objects.get(id=tweet_id)
-        if current_tweet in tweets_liked_by_current_user:
+        if current_tweet in tweets_liked_by_current_user and like_or_unlike == "unlike":
             print('removing')
             current_user_profile.liked_tweets.remove(current_tweet)
-        else:
+            return HttpResponse("yes")
+
+        elif not current_tweet in tweets_liked_by_current_user and like_or_unlike == "like":
             print('adding')
             current_user_profile.liked_tweets.add(current_tweet)
+            return HttpResponse("yes")
+
+        else:
+            print('error, nothing saved to db')
         return HttpResponse("yes")
     else:
         response = {"tweets_liked_by_current_user":[]}
