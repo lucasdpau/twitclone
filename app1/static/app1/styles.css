@@ -119,7 +119,6 @@ a {
 }
 
 .parent-tweet {
-    background-color: aquamarine;
 }
 
 .tweetcard{
@@ -173,6 +172,11 @@ a {
 }
 
 .tweet_text {
+
+}
+
+.tweet_primary {
+	font-size: 23px;
 }
 
 .tweet_footer {
