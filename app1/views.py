@@ -296,6 +296,7 @@ def fav_tweet_view(request, tweet_id):
 
 
 @login_required
+@csrf_exempt
 def follow_view(request, profile_name):
   #check if current_user is following profile_name, if not then add to db.
     if request.method == 'POST':
@@ -304,12 +305,13 @@ def follow_view(request, profile_name):
         user_tobe_followed = Profile.objects.get(user__username=profile_name)
         if user_tobe_followed in users_followed_by_current_user:
             print("already following {}".format(profile_name))
-            if request.POST.get("follow") == "unfollow":
-                current_user.following.remove(user_tobe_followed)
+            current_user.following.remove(user_tobe_followed)
+            return HttpResponse("Follow")
         else:
             print("not x, so now you follow {}".format(profile_name))
             current_user.following.add(user_tobe_followed) 
-        return HttpResponse("Hi")
+            return HttpResponse("Unfollow")
+        return HttpResponse("Error")
 
     elif request.method == "GET":
         user_profile = Profile.objects.get(user__username=profile_name)

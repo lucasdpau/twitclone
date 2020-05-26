@@ -16,23 +16,13 @@
                 </div>
                 {% if not is_own_profile %}
                 {% if already_following %}
-                <div class="profile_unfollow_button">
-		    <form action="/follow/{{profile_name}}" method="POST">
-			{% csrf_token %}
-                    	<button class="button" type="submit" value="unfollow" name="follow">
+                    	<div id="followButton" name="followButton{{profile_name}}" class="profile_follow_button button" type="submit" value="unfollow" name="follow">
                         	Unfollow
-                    	</button>
-		    </form>
-                </div>
+                    	</div>
                 {% else %}
-                <div class="profile_follow_button">
-		    <form action="/follow/{{profile_name}}" method="POST">
-			{% csrf_token %}
-                    	<button class="button" type="submit" value="follow" name="follow">
+                    	<div id="followButton"  name="followButton{{profile_name}}" class="profile_follow_button button" type="submit" value="follow" name="follow">
                         	Follow
-                    	</button>
-		    </form>
-                </div>
+			</div>
                 {% endif %}
                 {% endif %}
             </div>
@@ -83,19 +73,13 @@
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
                                 {% if tweet.is_liked_by_current_user %}
-                                    <form action="/like/{{tweet.id}}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="button unlike_button" type="submit" value="unlike" name="likebutton">
+                                        <div class="button like_button" type="submit" value="unlike" name="likebutton" id="likebutton{{tweet.id}}">
                                         Unlike
-                                        </button>
-                                    </form>
+                                        </div>
                                 {% else %}                                    
-                                    <form action="/like/{{tweet.id}}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="button like_button" type="submit" value="like" name="likebutton">
+                                        <div class="button like_button" type="submit" value="like" name="likebutton" id="likebutton{{tweet.id}}">
                                         Like
-                                        </button>
-                                    </form>
+                                        </div>
                                 {% endif %}
                             </div>
                             <div>
@@ -130,5 +114,6 @@
                 <a href="{% url 'index' %}">Home</a>
             </div>
         </div>
+	<script src="{% static 'app1/' %}profile.js"></script>
     </body>
     {%endblock%}

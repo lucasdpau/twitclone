@@ -13,6 +13,20 @@ var likeTweet = function(tweet_like_button, like_unlike) {
 }
 
 
+var followProfile = function(followButton) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		followButton.innerHTML = this.responseText;
+		followButton.setAttribute("value", this.responseText.toLowerCase());
+		}
+	};
+	xhttp.open("POST", "/follow/" + followButton.getAttribute('name').substr(12), true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+
 var likeButtons = document.querySelectorAll(".like_button");
 for (var i=0; i<likeButtons.length; i++) {
 // each button has an id of 'likebutton<tweet_id>', so we slice out the first 10 chars to isolate <tweet_id>
@@ -23,3 +37,9 @@ for (var i=0; i<likeButtons.length; i++) {
 		})
 	})(i);
 }
+
+
+var followButton = document.getElementById("followButton");
+followButton.addEventListener("click", function() {
+	followProfile(followButton);
+})
