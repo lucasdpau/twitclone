@@ -238,7 +238,10 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     tweet = Tweet.objects.get(id=tweet_id)
     parse_time(tweet)
     tweet.tag_list = tweet.tags_set.all()
-    parent_tweet = Tweet.objects.get(id=tweet.parent_tweet)
+    try:
+        parent_tweet = Tweet.objects.get(id=tweet.parent_tweet)
+    except:
+        parent_tweet = None
     #get all tweets who have their parent tweet as this tweet.
     child_tweets = Tweet.objects.filter(parent_tweet=tweet_id)
 
