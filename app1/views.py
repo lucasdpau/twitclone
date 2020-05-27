@@ -223,16 +223,6 @@ def profile_view(request, profile_name):
     return render(request, "profile.html", context)
 
 @login_required
-def profile_fav_view(request, profile_name): 
-    current_user = request.user
-    if profile_name == current_user.username:
-        is_own_profile = True
-    else:
-        is_own_profile = False
-
-    #return a list of profile_name's fav tweets
-
-@login_required
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
     current_username = request.user.username
     return_string = str(tweet_id)

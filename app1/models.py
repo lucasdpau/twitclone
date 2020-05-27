@@ -12,6 +12,7 @@ class Tweet(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)   #it's best to import settings to reference the builtin user model
     parent_tweet = models.IntegerField(null=True)  #None if this is an inital tweet. If you reply to a tweet, the post being replied to is the parent
+    parent_tweet_obj = models.ForeignKey('Tweet', on_delete=models.CASCADE, null=True)
     replies = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     deleted_text = models.CharField(default="", max_length=200)
@@ -31,6 +32,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=60, default="Nowhere")
     fav_tweets = models.ManyToManyField(Tweet, related_name="bookmarked_by")
     liked_tweets = models.ManyToManyField(Tweet, related_name="liked_by")
+    retweets = models.ManyToManyField(Tweet, related_name="retweeted_by")
     following = models.ManyToManyField('Profile', related_name='followed_by')
     
     

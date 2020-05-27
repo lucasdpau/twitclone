@@ -11,13 +11,12 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("settings", views.settings_view, name="settings"),
     path("profile/<profile_name>", views.profile_view, name="profile"),
-    path("profile/<profile_name>/favtweets", views.profile_fav_view, name="profile_fav"),
+    path("profile/<profile_name>/liked", views.liked_tweet_view, name="liked"),
     #if the user types an integer into the url, it will go to views.tweet and act appropriately depending on the int
     path("tweets/<int:tweet_id>", views.tweet_view, name="integer"), 
     path("delete/<int:tweet_id>", views.delete_tweet, name="delete"),
     path("tags/<tag_name>", views.tag_view, name="tags"),  
     path("follow/<profile_name>", views.follow_view, name="follow"),
     path("like/<int:tweet_id>", views.like_unlike, name="likeunlike"), 
-    path("liked/<profile_name>", views.liked_tweet_view, name="liked"),
     path("users", views.users_view, name="users"),
     ] 
