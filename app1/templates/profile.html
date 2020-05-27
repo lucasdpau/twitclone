@@ -42,9 +42,12 @@
                 	</div>
 		</div>
                 <div class="profile_followers">
-                    Followers: {% for profile in followers %}{{ profile.user.username }}, 
+                    Followers({{follower_count}}): {% for profile in followers %}{{ profile.user.username }}, 
                     {% endfor %}
                 </div>
+		<div class="profile_liked_tweets">
+			<a href="/liked/{{profile_name}}">Liked Tweets</a>
+		</div>
             </div>
             <div class="tweet_container">
                     {% for tweet in tweets %}
@@ -103,7 +106,7 @@
                 	{% csrf_token %}  
            		<textarea name="tweet" placeholder="What's new?"></textarea>
 			<br>
-                	<input type="submit" value="TWEET (Max 140 chars)">
+                	<input class="register_button" type="submit" value="TWEET">
             	    </form>
 		</div>
 	    </div>

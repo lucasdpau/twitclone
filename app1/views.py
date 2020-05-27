@@ -208,6 +208,7 @@ def profile_view(request, profile_name):
     profile_pic = user_model_object.profile.profile_pic
 
     followers = Profile.objects.filter(following=user_model_object.profile)
+    follower_count = followers.count()
     if current_user.profile in followers:
         already_following = True
     else:
@@ -217,7 +218,7 @@ def profile_view(request, profile_name):
 "tweets":tweet_list, "current_username":current_username, 
 "user_object": user_model_object, "is_own_profile":is_own_profile,  
 "profile_pic":profile_pic, "followers": followers, 
-"already_following": already_following, }
+"already_following": already_following, "follower_count": follower_count, }
 
     return render(request, "profile.html", context)
 
@@ -289,13 +290,19 @@ def tag_view(request, tag_name):
     for tweets in posts:
         tweet_list.append(tweets)
     tweet_list.reverse()
-    return render(request, "tags.html", { "posts": tweet_list, "current_username": current_user.username, })
+    return render(request, "tweetlist.html", { "posts": tweet_list, "current_username": current_user.username, })
     
 @login_required
 def fav_tweet_view(request, tweet_id):
     current_user = request.user
     #check if tweet's already favorited. if not then add it to the database
     pass
+
+def liked_tweet_view(request, profile_name):
+    current_user = request.user
+    tweets_liked_by_profile = Tweet.objects.filter(liked_by__user__username=profile_name).all()
+    context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, }
+    return render(request, "tweetlist.html", context)
 
 
 @login_required

@@ -3,7 +3,7 @@
         <title>Main Page</title>
     {%endblock%}
     {%block content%}
-    <body>
+    <body class="index_wrapper">
     {%for tweet in posts %}
        <div class="tweetcard">
                 <div class="tweet_profile_pic">
@@ -21,21 +21,21 @@
                             {{tweet.datetime}}
                         </div>
                     </div>
-                    <div class="tweettext">
-                        {{tweet.text}}
-                    </div>
+                        <div class="tweet_content_text">
+                            {{ tweet.text }}
+                        </div>
                     <div class="tweetfooter">
-                        <a href="/reply/{{tweet_id}}">Reply!</a>  
+                        <a href="/tweets/{{tweet.id}}">Reply!</a>  
                     </div>            
                 </div>
             </div> 
         </div>
     {% endfor %}
-        <div>
+        <footer>
             <div>
                 <a href="{% url 'logout' %}">Logout</a>
                 <a href="{% url 'index' %}">Home</a>
             </div>
-        </div>
+        </footer>
     </body>
     {%endblock%}
