@@ -202,7 +202,9 @@ def profile_view(request, profile_name):
     already_following = False
 
     #filter so that only tweets by the profile_name are shown
-    tweets = Tweet.objects.filter(author__username=profile_name)
+    profile_tweets = Tweet.objects.filter(author__username=profile_name)
+    retweets = Tweet.objects.filter(retweeted_by__user=user_model_object)
+    tweets = profile_tweets.union(retweets).order_by('datetime')
     tweet_list = []
     for items in tweets:
         if not items.is_deleted:
