@@ -84,6 +84,15 @@
                                         Like
                                         </div>
                                 {% endif %}
+                                {% if tweet.is_retweeted_by_current_user %}
+                                        <div class="button retweet_button" type="submit" value="untweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
+                                        Untweet
+                                        </div>
+                                {% else %}                                    
+                                    <div class="button retweet_button" type="submit" value="retweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
+                                        Retweet
+                                    </div>
+                                {% endif %}
                             </div>
                             <div>
                                 {% for tag in tweet.tag_list %}

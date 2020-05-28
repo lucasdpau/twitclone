@@ -19,4 +19,5 @@ urlpatterns = [
     path("follow/<profile_name>", views.follow_view, name="follow"),
     path("like/<int:tweet_id>", views.like_unlike, name="likeunlike"), 
     path("users", views.users_view, name="users"),
+    path("retweet/<int:tweet_id>", views.retweet, name="retweet"),
     ] 

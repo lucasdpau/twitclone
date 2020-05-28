@@ -71,13 +71,16 @@ def index(request):
         tweetlist = tweetlist[:5]
     authenticated_username = request.user.username
     tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+    tweets_retweeted_by_current_user = Tweet.objects.filter(retweeted_by=current_user_profile)
     for tweet in tweetlist:
         parse_time(tweet)
     #package a list of the tweets tags into the tweet object
         tweet.tag_list = tweet.tags_set.all()
         if tweet in tweets_liked_by_current_user:
             tweet.is_liked_by_current_user = True
-    
+        if tweet in tweets_retweeted_by_current_user:
+            tweet.is_retweeted_by_current_user = True
+
     context = {"tweets": tweetlist, "current_user": current_user, "current_username":current_username, 
 "logged_in": current_user.is_authenticated}
 
@@ -220,6 +223,7 @@ def profile_view(request, profile_name):
         current_username = request.user.username
         current_user_profile = Profile.objects.get(user__username=current_username)
         tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+        tweets_retweeted_by_current_user = Tweet.objects.filter(retweeted_by=current_user_profile)
         if profile_name == current_username:
             is_own_profile = True
         if current_user.profile in followers:
@@ -227,6 +231,9 @@ def profile_view(request, profile_name):
         for tweet in tweet_list:
             if tweet in tweets_liked_by_current_user:
                 tweet.is_liked_by_current_user = True
+            if tweet in tweets_retweeted_by_current_user:
+                tweet.is_retweeted_by_current_user = True
+
 
     context = { "logged_in": current_user.is_authenticated, "current_user": current_user, "profile_name": profile_name, 
 "tweets":tweet_list, "current_username": current_username, 
@@ -308,10 +315,28 @@ def tag_view(request, tag_name):
     return render(request, "tweetlist.html", { "posts": tweet_list, "current_username": current_username, "logged_in": current_user.is_authenticated,})
     
 @login_required
-def fav_tweet_view(request, tweet_id):
+@csrf_exempt
+def retweet(request, tweet_id):
+#check if it's been retweeted before. if not, then add it to the profile's retweet list
+    if request.method == "GET":
+        return HttpResponse("Don't GET this")
+
     current_user = request.user
-    #check if tweet's already favorited. if not then add it to the database
-    pass
+    current_user_profile = Profile.objects.get(user__username=current_user.username)
+    retweeted_by_current_user = Tweet.objects.filter(retweeted_by=current_user_profile)
+    to_be_retweeted = Tweet.objects.get(id=tweet_id)
+    retweet_or_undo = request.POST.get("re_or_undo")
+    print(retweet_or_undo)
+    if to_be_retweeted in retweeted_by_current_user:
+        print("this has already been retweeted, undoing retweet")
+        current_user_profile.retweets.remove(to_be_retweeted)
+        return HttpResponse("Retweet")
+    elif retweet_or_undo == "retweet":
+        print("retweeting", to_be_retweeted )
+        current_user_profile.retweets.add(to_be_retweeted)
+        return HttpResponse("Unretweet")
+
+    return HttpResponse("boop")
 
 def liked_tweet_view(request, profile_name):
 # returns a list of tweets liked by <profile_name>
