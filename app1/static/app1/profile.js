@@ -7,8 +7,7 @@ var likeTweet = function(tweet_like_button, like_unlike) {
 		}
 		else {
 			tweet_like_button.innerHTML = this.responseText;
-			console.log(this.responseText);
-			console.log(tweet_like_button.setAttribute("value", this.responseText.toLowerCase()));
+			tweet_like_button.setAttribute("value", this.responseText.toLowerCase());
 			}
 		}
 	};

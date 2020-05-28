@@ -3,8 +3,7 @@ var likeTweet = function(tweet_like_button, like_unlike) {
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
 		tweet_like_button.innerHTML = this.responseText;
-		console.log(this.responseText);
-		console.log(tweet_like_button.setAttribute("value", this.responseText.toLowerCase()));
+		tweet_like_button.setAttribute("value", this.responseText.toLowerCase());
 		}
 	};
 	xhttp.open("POST", "/like/" + tweet_like_button.tweet_id, true);

@@ -11,9 +11,9 @@
     <header>
 	{% if logged_in %}
         <div>
-            <a href="../">FakeTwitter</a>
-            <a href="../profile/{{current_username}}">Your Profile</a>  
-            <a href="/settings">Settings</a>
+            <a href="{% url 'index' %}">FakeTwitter</a>
+            <a href="{% url 'profile' profile_name=current_username %}">Your Profile</a>  
+            <a href="{% url 'settings' %}">Settings</a>
             <a href="{% url 'logout' %}">Logout</a>
         </div>
 	{% endif %}
