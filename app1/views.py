@@ -52,9 +52,9 @@ def index(request):
         #profile = Profile.objects.filter(user=user)
         #if profile.count() < 1:
             #Profile.objects.create(user=user) 
-    if not request.user.is_authenticated:
-        return render(request, "login.html", {}) #renders from the templates folder in the app folder
     current_user = request.user
+    if not current_user.is_authenticated:
+        return render(request, "login.html", {}) #renders from the templates folder in the app folder
     current_username = request.user.username  
     current_user_profile = Profile.objects.get(user__username=current_username)
     # add all queried objects to a list
@@ -74,8 +74,11 @@ def index(request):
         tweet.tag_list = tweet.tags_set.all()
         if tweet in tweets_liked_by_current_user:
             tweet.is_liked_by_current_user = True
+    
+    context = {"tweets": tweetlist, "current_user": current_user, "current_username":current_username, 
+"logged_in": current_user.is_authenticated}
 
-    return render(request, "index.html", {"tweets": tweetlist, "current_user": current_user, "current_username":current_username})
+    return render(request, "index.html", context)
 
 def login_view(request):  #if we name this function 'login', it will be the same as the imported login function so it won't work.
     #If a HTTP POST request is made
@@ -83,8 +86,8 @@ def login_view(request):  #if we name this function 'login', it will be the same
         username = request.POST.get("username").lower()
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
+        print(user)
+        if user:
             login(request, user) #Django has built in logout and login functions, so we dont have to code it manually like in flask
             return HttpResponseRedirect(reverse("index"))  # reverses the urlname back to url, so that from the name index we get the url.
         
@@ -121,11 +124,13 @@ def register(request):
             check_username = User.objects.filter(username=username)
             if check_username:
                 return render(request, "register.html", {"message": "Username taken!"})
-            #if not taken creates entry in user db
+            #if not taken creates entry in user db, then automaticall logs in the user
             else:
                 user = User.objects.create_user(username, email, password)
                 user.save()
-                return render(request, "login.html")
+                user_login = authenticate(request, username=username, password=password)
+                login(request, user_login)
+                return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "register.html", {"message": "Passwords don't match"})
     #if GET request
@@ -157,7 +162,11 @@ def settings_view(request):
             user_model_object.profile.profile_pic = updated_profile_pic
             user_model_object.save()
     
-    return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio, "profile_date_joined": profile_date_joined  })
+    context = {"current_username":current_username, "profile_url":profile_url, 
+"profile_location": profile_location, "profile_bio": profile_bio, 
+"profile_date_joined": profile_date_joined, "logged_in": True}
+
+    return render(request, "settings.html", context)
     
  
 def profile_view(request, profile_name):
@@ -223,9 +232,12 @@ def profile_view(request, profile_name):
 
     return render(request, "profile.html", context)
 
-@login_required
+
 def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls.py
-    current_username = request.user.username
+    current_user = request.user
+    current_username = None 
+    if current_user.is_authenticated:
+        current_username = request.user.username
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
     parse_time(tweet)
@@ -256,9 +268,12 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
             return HttpResponseRedirect(reverse("index"))
         else:
             return HttpResponse("Char limit of 140 exceeded")
-   
-    return render(request, "tweet.html", {"current_username": current_username, "tweet":tweet, "tweet_text": tweet.text, 
-                                          "child_tweets": child_tweets, "parent_tweet": parent_tweet, "tweet_id":tweet_id}) 
+
+    context = {"current_username": current_username, "tweet":tweet, 
+"tweet_text": tweet.text, "child_tweets": child_tweets, "parent_tweet": parent_tweet, 
+"tweet_id":tweet_id, "logged_in": current_user.is_authenticated,}
+
+    return render(request, "tweet.html", context) 
 
 
 @login_required
@@ -273,15 +288,17 @@ def delete_tweet(request, tweet_id):
     else:
         return HttpResponse("You are not the author of this tweet.")
 
-@login_required
 def tag_view(request, tag_name):
     current_user = request.user
+    current_username = None
+    if current_user.is_authenticated:
+        current_username = current_user.username
     posts = Tweet.objects.filter(tags__tagname=tag_name, is_deleted=False)
     tweet_list = []
     for tweets in posts:
         tweet_list.append(tweets)
     tweet_list.reverse()
-    return render(request, "tweetlist.html", { "posts": tweet_list, "current_username": current_user.username, })
+    return render(request, "tweetlist.html", { "posts": tweet_list, "current_username": current_username, "logged_in": current_user.is_authenticated,})
     
 @login_required
 def fav_tweet_view(request, tweet_id):
@@ -292,7 +309,9 @@ def fav_tweet_view(request, tweet_id):
 def liked_tweet_view(request, profile_name):
     current_user = request.user
     tweets_liked_by_profile = Tweet.objects.filter(liked_by__user__username=profile_name).all()
-    context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, }
+    context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, 
+"logged_in": current_user.is_authenticated, }
+
     return render(request, "tweetlist.html", context)
 
 
@@ -368,10 +387,11 @@ def like_unlike(request, tweet_id):
         return HttpResponse("NotLoggedIn")
 
 def users_view(request):
+    current_user = request.user
     all_users = User.objects.all()
     user_list = []
     for item in all_users:
         user_list.append(item)
     json_response = {"userlist":user_list}
     print(json_response)
-    return render(request, "users.html", {"user_list": user_list, })
+    return render(request, "users.html", {"user_list": user_list, "logged_in": current_user.is_authenticated,})

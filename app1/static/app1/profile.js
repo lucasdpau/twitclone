@@ -50,6 +50,8 @@ for (var i=0; i<likeButtons.length; i++) {
 
 
 var followButton = document.getElementById("followButton");
-followButton.addEventListener("click", function() {
-	followProfile(followButton);
-})
+if (followButton) {
+	followButton.addEventListener("click", function() {
+		followProfile(followButton);
+	})
+}
