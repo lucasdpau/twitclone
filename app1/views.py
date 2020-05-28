@@ -159,7 +159,7 @@ def settings_view(request):
     
     return render(request, "settings.html", {"current_username":current_username, "profile_url":profile_url, "profile_location": profile_location, "profile_bio": profile_bio, "profile_date_joined": profile_date_joined  })
     
-@login_required   
+ 
 def profile_view(request, profile_name):
     # NOTE: the tweet form in index has a POST route to this view.
     if request.method == "POST":  #if a form has been submitted then we add it to the database
@@ -179,14 +179,11 @@ def profile_view(request, profile_name):
         else:
             return HttpResponse("Char limit of 140 exceeded")
 
-    current_user = request.user
-    current_username = request.user.username
-    current_user_profile = Profile.objects.get(user__username=current_username)
-    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
-    if profile_name == current_username:
-        is_own_profile = True
-    else:
-        is_own_profile = False
+    user_model_object = User.objects.get(username=profile_name)
+    profile_pic = user_model_object.profile.profile_pic
+    followers = Profile.objects.filter(following=user_model_object.profile)
+    follower_count = followers.count()
+    already_following = False
 
     #filter so that only tweets by the profile_name are shown
     tweets = Tweet.objects.filter(author__username=profile_name)
@@ -201,22 +198,26 @@ def profile_view(request, profile_name):
         parse_time(tweet)
     #package a list of the tweets tags into the tweet object
         tweet.tag_list = tweet.tags_set.all()
-        if tweet in tweets_liked_by_current_user:
-            tweet.is_liked_by_current_user = True
 
-    user_model_object = User.objects.get(username=profile_name)
-    profile_pic = user_model_object.profile.profile_pic
 
-    followers = Profile.objects.filter(following=user_model_object.profile)
-    follower_count = followers.count()
-    if current_user.profile in followers:
-        already_following = True
-    else:
-        already_following = False
+    current_user = request.user
+    current_username = None
+    is_own_profile = False
+    if current_user.is_authenticated:
+        current_username = request.user.username
+        current_user_profile = Profile.objects.get(user__username=current_username)
+        tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+        if profile_name == current_username:
+            is_own_profile = True
+        if current_user.profile in followers:
+            already_following = True
+        for tweet in tweet_list:
+            if tweet in tweets_liked_by_current_user:
+                tweet.is_liked_by_current_user = True
 
-    context = { "current_user": current_user, "profile_name": profile_name, 
-"tweets":tweet_list, "current_username":current_username, 
-"user_object": user_model_object, "is_own_profile":is_own_profile,  
+    context = { "logged_in": current_user.is_authenticated, "current_user": current_user, "profile_name": profile_name, 
+"tweets":tweet_list, "current_username": current_username, 
+"user_object": user_model_object, "is_own_profile": is_own_profile,  
 "profile_pic":profile_pic, "followers": followers, 
 "already_following": already_following, "follower_count": follower_count, }
 
@@ -295,71 +296,76 @@ def liked_tweet_view(request, profile_name):
     return render(request, "tweetlist.html", context)
 
 
-@login_required
 @csrf_exempt
 def follow_view(request, profile_name):
-  #check if current_user is following profile_name, if not then add to db.
-    if request.method == 'POST':
-        current_user = Profile.objects.get(user__username=request.user.username)
-        users_followed_by_current_user = Profile.objects.filter(followed_by=current_user)
-        user_tobe_followed = Profile.objects.get(user__username=profile_name)
-        if user_tobe_followed in users_followed_by_current_user:
-            print("already following {}".format(profile_name))
-            current_user.following.remove(user_tobe_followed)
-            return HttpResponse("Follow")
+  #check if current_user_profile is following profile_name, if not then add to db.
+    current_user = request.user
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            current_user_profile = Profile.objects.get(user__username=current_user.username)
+            users_followed_by_current_user = Profile.objects.filter(followed_by=current_user_profile)
+            user_tobe_followed = Profile.objects.get(user__username=profile_name)
+            if user_tobe_followed in users_followed_by_current_user:
+                print("already following {}".format(profile_name))
+                current_user_profile.following.remove(user_tobe_followed)
+                return HttpResponse("Follow")
+            else:
+                print("not x, so now you follow {}".format(profile_name))
+                current_user_profile.following.add(user_tobe_followed) 
+                return HttpResponse("Unfollow")
+            return HttpResponse("Error")
+
+        elif request.method == "GET":
+            user_profile = Profile.objects.get(user__username=profile_name)
+            users_followed_by_user = user_profile.following.all()
+            followers_of_user = Profile.objects.filter(following=user_profile)
+            list_of_followers = []
+            list_of_followed_by_user = []
+            for users in users_followed_by_user:
+                list_of_followed_by_user.append(users.user.username)
+            for users in followers_of_user:
+                list_of_followers.append(users.user.username)
+            follow_json = {}
+            follow_json["followers"] = list_of_followers
+            follow_json["following"] = list_of_followed_by_user
+
+            return JsonResponse(follow_json)
+
         else:
-            print("not x, so now you follow {}".format(profile_name))
-            current_user.following.add(user_tobe_followed) 
-            return HttpResponse("Unfollow")
-        return HttpResponse("Error")
-
-    elif request.method == "GET":
-        user_profile = Profile.objects.get(user__username=profile_name)
-        users_followed_by_user = user_profile.following.all()
-        followers_of_user = Profile.objects.filter(following=user_profile)
-        list_of_followers = []
-        list_of_followed_by_user = []
-        for users in users_followed_by_user:
-            list_of_followed_by_user.append(users.user.username)
-        for users in followers_of_user:
-            list_of_followers.append(users.user.username)
-        follow_json = {}
-        follow_json["followers"] = list_of_followers
-        follow_json["following"] = list_of_followed_by_user
-
-        return JsonResponse(follow_json)
-
+            return HttpResponse("No")
     else:
-        return HttpResponse("No")
+        return HttpResponse("NotLoggedIn")
 
-@login_required
 @csrf_exempt
 def like_unlike(request, tweet_id):
-    current_user_profile = Profile.objects.get(user__username=request.user.username)
-    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
-    if request.method == 'POST':
-        like_or_unlike = request.POST.get("likeunlike")
-        print(like_or_unlike, request.POST)
-        current_tweet = Tweet.objects.get(id=tweet_id)
-        if current_tweet in tweets_liked_by_current_user and like_or_unlike == "unlike":
-            print('removing')
-            current_user_profile.liked_tweets.remove(current_tweet)
-            return HttpResponse("Like")
+    current_user = request.user
+    if current_user.is_authenticated:
+        current_user_profile = Profile.objects.get(user__username=current_user.username)
+        tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+        if request.method == 'POST':
+            like_or_unlike = request.POST.get("likeunlike")
+            print(like_or_unlike, request.POST)
+            current_tweet = Tweet.objects.get(id=tweet_id)
+            if current_tweet in tweets_liked_by_current_user and like_or_unlike == "unlike":
+                print('removing')
+                current_user_profile.liked_tweets.remove(current_tweet)
+                return HttpResponse("Like")
 
-        elif not current_tweet in tweets_liked_by_current_user and like_or_unlike == "like":
-            print('adding')
-            current_user_profile.liked_tweets.add(current_tweet)
-            return HttpResponse("Unlike")
+            elif not current_tweet in tweets_liked_by_current_user and like_or_unlike == "like":
+                print('adding')
+                current_user_profile.liked_tweets.add(current_tweet)
+                return HttpResponse("Unlike")
 
+            else:
+                print('error, nothing saved to db')
+            return HttpResponse("yes")
         else:
-            print('error, nothing saved to db')
-        return HttpResponse("yes")
+            response = {"tweets_liked_by_current_user":[]}
+            for tweets in tweets_liked_by_current_user:
+                response["tweets_liked_by_current_user"].append(tweets.text)
+            return JsonResponse(response)
     else:
-        response = {"tweets_liked_by_current_user":[]}
-        for tweets in tweets_liked_by_current_user:
-            response["tweets_liked_by_current_user"].append(tweets.text)
-        return JsonResponse(response)
-
+        return HttpResponse("NotLoggedIn")
 
 def users_view(request):
     all_users = User.objects.all()

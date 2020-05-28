@@ -2,9 +2,14 @@ var likeTweet = function(tweet_like_button, like_unlike) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		tweet_like_button.innerHTML = this.responseText;
-		console.log(this.responseText);
-		console.log(tweet_like_button.setAttribute("value", this.responseText.toLowerCase()));
+		if (this.responseText == "NotLoggedIn") {
+			window.location.href = "/login";
+		}
+		else {
+			tweet_like_button.innerHTML = this.responseText;
+			console.log(this.responseText);
+			console.log(tweet_like_button.setAttribute("value", this.responseText.toLowerCase()));
+			}
 		}
 	};
 	xhttp.open("POST", "/like/" + tweet_like_button.tweet_id, true);
@@ -17,8 +22,13 @@ var followProfile = function(followButton) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		followButton.innerHTML = this.responseText;
-		followButton.setAttribute("value", this.responseText.toLowerCase());
+		if (this.responseText == "NotLoggedIn") {
+			window.location.href = "/login";
+		}
+		else {
+			followButton.innerHTML = this.responseText;
+			followButton.setAttribute("value", this.responseText.toLowerCase());
+			}	
 		}
 	};
 	xhttp.open("POST", "/follow/" + followButton.getAttribute('name').substr(12), true);

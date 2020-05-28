@@ -95,6 +95,7 @@
                     {% endfor %}
             </div>
         </div>
+	{% if logged_in %}
         <div>
 	    <div class="tweetcard">
                 <div class="tweet_profile_pic">
@@ -111,6 +112,7 @@
 		</div>
 	    </div>
         </div>
+        {% endif %}
         <footer>
             <div>
                 <a href="{% url 'logout' %}">Logout</a>
