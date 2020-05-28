@@ -164,6 +164,7 @@ def settings_view(request):
         if updated_profile_pic:
             user_model_object.profile.profile_pic = updated_profile_pic
             user_model_object.save()
+        return HttpResponseRedirect("settings")
     
     context = {"current_username":current_username, "profile_url":profile_url, 
 "profile_location": profile_location, "profile_bio": profile_bio, 
