@@ -60,6 +60,9 @@
                         </div>
                         <div class="tweet_content">
                             <div class="tweet_content_header">
+				{% if not tweet.author.username == profile_name %}
+				<a href="{{ profile_name }}">{{ profile_name }} Retweeted</a><br>
+				{% endif %}
                                 <div class="tweet_author">
                                     <a href="{{tweet.author}}">{{tweet.author}}</a>
                                 </div>
