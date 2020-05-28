@@ -13,7 +13,9 @@ import string
 def parse_time(tweet_obj):
     # calculates time between now and the time of a tweet_object's posting
     now = datetime.datetime.now(datetime.timezone.utc)
-    time_diff = now - tweet_obj.datetime      #time diff only keeps track of days/seconds and microseconds
+#the object from datetime only keeps track of days, seconds and microseconds, so we must work aroudn these units
+    time_diff = now - tweet_obj.datetime    
+#twitter truncates times to hours/minutes if a post is recent  
     if time_diff.days < 1:
         if time_diff.seconds <= 3600: #if less than 1 hour has passed since the post
             time_diff_mins = int(time_diff.seconds/60)
@@ -23,6 +25,7 @@ def parse_time(tweet_obj):
             tweet_obj.datetime = str(time_diff_hrs) + "h"
 
 def get_tags(tweet_text):
+# goes through a string, finds words that start with '#', populates a list with them and returns the list
     prepared_text = (tweet_text + " ").lower()
     tag_found = False
     tag_list = []
@@ -251,6 +254,7 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
 
     if request.method == "POST":
         tweet_text = request.POST.get("tweet")
+# we also don't want empty tweets
         if len(tweet_text) <= 140 and len(tweet_text) > 0:
             new_tweet = Tweet(text=tweet_text, author=request.user, parent_tweet=tweet.id)
             tweet_tag_list = get_tags(tweet_text)
@@ -278,6 +282,7 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
 
 @login_required
 def delete_tweet(request, tweet_id):
+# we must make sure the logged in user is the same as the tweets author!
     tweet = Tweet.objects.filter(id=tweet_id)[0]
     if request.user.username == tweet.author.username:
         tweet.deleted_text = tweet.text
@@ -293,8 +298,9 @@ def tag_view(request, tag_name):
     current_username = None
     if current_user.is_authenticated:
         current_username = current_user.username
-    posts = Tweet.objects.filter(tags__tagname=tag_name, is_deleted=False)
+# get all tweets with a certain tag, add them to a list so we can iterate over them in the view
     tweet_list = []
+    posts = Tweet.objects.filter(tags__tagname=tag_name, is_deleted=False)
     for tweets in posts:
         tweet_list.append(tweets)
     tweet_list.reverse()
@@ -307,6 +313,7 @@ def fav_tweet_view(request, tweet_id):
     pass
 
 def liked_tweet_view(request, profile_name):
+# returns a list of tweets liked by <profile_name>
     current_user = request.user
     tweets_liked_by_profile = Tweet.objects.filter(liked_by__user__username=profile_name).all()
     context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, 
@@ -327,6 +334,7 @@ def follow_view(request, profile_name):
             if user_tobe_followed in users_followed_by_current_user:
                 print("already following {}".format(profile_name))
                 current_user_profile.following.remove(user_tobe_followed)
+# we return the text "follow" so that the javascript knows what to replace the button label with.
                 return HttpResponse("Follow")
             else:
                 print("not x, so now you follow {}".format(profile_name))
@@ -359,6 +367,7 @@ def follow_view(request, profile_name):
 def like_unlike(request, tweet_id):
     current_user = request.user
     if current_user.is_authenticated:
+# we only allow likes for logged in users. 
         current_user_profile = Profile.objects.get(user__username=current_user.username)
         tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
         if request.method == 'POST':
@@ -368,6 +377,7 @@ def like_unlike(request, tweet_id):
             if current_tweet in tweets_liked_by_current_user and like_or_unlike == "unlike":
                 print('removing')
                 current_user_profile.liked_tweets.remove(current_tweet)
+# we return the response "like" so that the javascript knows to change the button back to like
                 return HttpResponse("Like")
 
             elif not current_tweet in tweets_liked_by_current_user and like_or_unlike == "like":
@@ -391,6 +401,10 @@ def users_view(request):
     all_users = User.objects.all()
     user_list = []
     for item in all_users:
+        item.profile.follower_count = item.profile.followed_by.count()
+        item.profile.following_count = item.profile.following.count()
+#we don't want to count the deleted tweets
+        item.profile.tweet_count = Tweet.objects.filter(author=item).exclude(is_deleted=True).count()
         user_list.append(item)
     json_response = {"userlist":user_list}
     print(json_response)

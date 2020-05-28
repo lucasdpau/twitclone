@@ -21,7 +21,9 @@
                         Follow button!
                     </div>
                     <div>
-                        Tweets/stats here
+                        {{user.profile.follower_count}} Followers<br>
+			{{user.profile.following_count}} Following<br>
+			{{user.profile.tweet_count}} Tweets
                     </div>
                 </div>
             {% endfor %} 
