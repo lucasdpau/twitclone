@@ -347,6 +347,9 @@ def liked_tweet_view(request, profile_name):
 # returns a list of tweets liked by <profile_name>
     current_user = request.user
     tweets_liked_by_profile = Tweet.objects.filter(liked_by__user__username=profile_name).all()
+    for tweet in tweets_liked_by_profile:
+        tweet.tag_list = tweet.tags_set.all()
+
     context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, 
 "logged_in": current_user.is_authenticated, }
 
@@ -439,4 +442,17 @@ def users_view(request):
         user_list.append(item)
     json_response = {"userlist":user_list}
     print(json_response)
-    return render(request, "users.html", {"user_list": user_list, "logged_in": current_user.is_authenticated,})
+    return render(request, "users.html", {"user_list": user_list, "logged_in": current_user.is_authenticated, "current_username": current_user.username })
+
+@login_required
+def followed_users_view(request):
+    current_user = request.user
+    current_user_profile = Profile.objects.get(user__username=current_user.username)
+    user_list = []
+    followed_users = User.objects.filter(profile__followed_by=current_user_profile).all()
+    for item in followed_users:
+        user_list.append(item)
+    context = {"user_list": user_list, "logged_in": current_user.is_authenticated, 
+"current_username": current_user.username, }
+    return render(request, "users.html", context)    
+

@@ -3,10 +3,13 @@
         <title>Main Page</title>
     {%endblock%}
     {%block content%}
-    <body class="index_wrapper">
+    <body class="index_wrapper centered"">
+	{% if logged_in %}
+	<a href="/follow_list">Your follow list</a>
+	{% endif %}
         <div class="user_list_wrapper">
             {% for user in user_list %}
-                <div class="user_card">
+                <div class="user_card" id="user_card{{user.id}}">
                     <div class="profile_pic_wrapper">
                     {% load static %}
                         <img src="{% static 'app1/' %}{{user.profile.profile_pic}}" class="profile_pic">
