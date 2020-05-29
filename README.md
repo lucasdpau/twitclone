@@ -1,8 +1,8 @@
 # twitclone
-This is a Twitter clone that I made to practice my development and coding skills.
+This is a Twitter clone I built for practice and learning, using Django and SQLite.
 
-The main features I want to replicate are making accounts, creating posts, replying to posts, and liking posts.
 
-I also implemented hashtags, and the ability to follow other users. There is an option to delete posts if you are the author.
-
-Liking/unliking posts is done with AJAX.
+### Functionality:
+* Create a customized profile for yourself, including biography, location and a selection of profile pictures.
+* Write, delete, like and 'retweet' posts 
+* Add hashtags to your posts, and browse other posts based on their hashtags 

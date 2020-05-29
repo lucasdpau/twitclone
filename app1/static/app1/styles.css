@@ -35,6 +35,10 @@ a {
 	text-align: center;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 .login_page {
 	padding-top: 50px;
 }
@@ -46,13 +50,14 @@ a {
 }
 
 .button {
-	padding: 0.75em;
+	padding: 0.65em;
 	width: 100px;
 	background-color: white;
 	color: rgb(29, 161, 242);
 	border-radius: 100px;
 	border-color: rgb(29, 161, 242);
 	border-style: solid;
+	border-width: 1px;
 	font-weight: bold;
 }
 
@@ -120,6 +125,11 @@ a {
 	display: flex;
 	justify-content: space-between;
 	color: #555;
+}
+
+
+.profile_follow_unit {
+	margin-right: 10px;
 }
 
 .tweet_container {

@@ -199,6 +199,8 @@ def profile_view(request, profile_name):
     profile_pic = user_model_object.profile.profile_pic
     followers = Profile.objects.filter(following=user_model_object.profile)
     follower_count = followers.count()
+    following = Profile.objects.filter(followed_by=user_model_object.profile)
+    following_count = following.count()
     already_following = False
 
     #filter so that only tweets by the profile_name are shown
@@ -241,7 +243,8 @@ def profile_view(request, profile_name):
 "tweets":tweet_list, "current_username": current_username, 
 "user_object": user_model_object, "is_own_profile": is_own_profile,  
 "profile_pic":profile_pic, "followers": followers, 
-"already_following": already_following, "follower_count": follower_count, }
+"already_following": already_following, "follower_count": follower_count,
+"following_count": following_count, }
 
     return render(request, "profile.html", context)
 

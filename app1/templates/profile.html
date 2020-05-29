@@ -41,9 +41,13 @@
                     		Joined: {{ user_object.date_joined }}
                 	</div>
 		</div>
-                <div class="profile_followers">
-                    Followers({{follower_count}}): {% for profile in followers %}{{ profile.user.username }}, 
-                    {% endfor %}
+                <div class="profile_follows">
+			<span class="profile_follow_unit">
+                    		<span class="bold">{{follower_count}}</span> Followers 
+			</span>
+			<span class="profile_follow_unit">
+				<span class="bold">{{following_count}}</span> Following 
+			</span>
                 </div>
 		<div class="profile_liked_tweets">
 			<a href="{{profile_name}}/liked">Liked Tweets</a>
