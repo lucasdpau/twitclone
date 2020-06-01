@@ -79,7 +79,7 @@
                             </div>
                             <div class="tweet_footer">
                                 <a href="/tweets/{{tweet.id}}">View Replies ({{tweet.replies}})</a>
-				{% if tweet.author.username == profile_name %}
+				{% if tweet.author.username == profile_name and is_own_profile %}
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
                                 {% if tweet.is_liked_by_current_user %}
