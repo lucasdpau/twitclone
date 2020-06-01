@@ -256,7 +256,6 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
         current_username = request.user.username
     return_string = str(tweet_id)
     tweet = Tweet.objects.get(id=tweet_id)
-    parse_time(tweet)
     tweet.tag_list = tweet.tags_set.all()
     try:
         parent_tweet = Tweet.objects.get(id=tweet.parent_tweet)
@@ -286,6 +285,7 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
         else:
             return HttpResponse("Char limit of 140 exceeded")
 
+    parse_time(tweet)
     context = {"current_username": current_username, "tweet":tweet, 
 "tweet_text": tweet.text, "child_tweets": child_tweets, "parent_tweet": parent_tweet, 
 "tweet_id":tweet_id, "logged_in": current_user.is_authenticated,}
