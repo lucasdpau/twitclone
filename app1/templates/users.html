@@ -12,16 +12,15 @@
                 <div class="user_card" id="user_card{{user.id}}">
                     <div class="profile_pic_wrapper">
                     {% load static %}
+			<a href="../profile/{{ user.username }}">
                         <img src="{% static 'app1/' %}{{user.profile.profile_pic}}" class="profile_pic">
+			</a>
                     </div>
                     <div class="user_username">
-                        {{ user.username }} 
+                        <a href="../profile/{{ user.username }}">{{ user.username }}</a>
                     </div>
                     <div class="user_bio">
                         {{ user.profile.bio }}
-                    </div>
-                    <div>
-                        Follow button!
                     </div>
                     <div>
                         {{user.profile.follower_count}} Followers<br>

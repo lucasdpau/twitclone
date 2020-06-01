@@ -221,6 +221,12 @@ a {
 	margin-bottom: 10px;
 	font-weight: bold;
 	font-size: 20px;
+
+}
+
+.user_username a {
+	color: black;
+	text-decoration: none;
 }
 
 .user_bio {
