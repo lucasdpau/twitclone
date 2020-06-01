@@ -3,7 +3,7 @@
         <title>Reply</title>
     {%endblock%}
     {%block content%}
-    <body>
+    <body class="centered">
 	<main class="index_wrapper">
         <div>
             <h1>
@@ -15,45 +15,42 @@
 		<div>
 			<p>Date Joined: {{ profile_date_joined }}</p>
 		</div>
-                <div class="profile_bio">
-                    BIO: {{ profile_bio }}
-                </div>
-                <div class="profile_location">
-                    Location: {{ profile_location }}
-                </div>
+
             </div>
         </div>
         <div>
             <form action="settings" method="POST">
                 {% csrf_token %} 
-                <div class="settings_bio">                 
-                    <textarea name="bio" id="bio"></textarea>
-			<br>
-		    <label for="bio">Write your bio here! (Max 300 chars)</label>
-			<br>               
-                    <input type="text" name="location" id="location">
-		    <label for="location">Enter your location here!</label>  
+                <div class="settings_section">     
+		    <label for="bio">Write your bio here! (Max 300 chars)</label>            
+                    <textarea name="bio" id="bio" placeholder="{{ profile_bio }}"></textarea>
+		</div>
+		<div class="settings_section">       
+                    Location: 
+                    <input type="text" name="location" id="location" placeholder="{{ profile_location }} "> 
                 </div>
-		<div>
-                <input type="radio" id="default" name="profile_pic" value="default-user-image.png">
-                <label for="default">Default Icon</label>
-                <input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
-                <label for="green_square">Green Square</label>
-                <input type="radio" id="red_diamond" name="profile_pic" value="red_diamond.jpg">
-                <label for="red_diamond">Red Diamond</label>
-                <input type="radio" id="blue_circle" name="profile_pic" value="blue_circle.jpg">
-                <label for="blue_circle">Blue Circle</label>
-                <input type="submit">
+		<div class="settings_section">
+			<h4>Profile Picture Selection</h4>
+ 	                <input type="radio" id="default" name="profile_pic" value="default-user-image.png">
+        	        <label for="default">Default Icon</label>
+                	<input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
+	                <label for="green_square">Green Square</label>
+        	        <input type="radio" id="red_diamond" name="profile_pic" value="red_diamond.jpg">
+	                <label for="red_diamond">Red Diamond</label>
+                	<input type="radio" id="blue_circle" name="profile_pic" value="blue_circle.jpg">
+        	        <label for="blue_circle">Blue Circle</label>
+		</div>
+		<div class="settings_section">
+                	<input type="submit">
 		</div>
             </form>
         </div>
-        <div>
+        <footer>
             <div>
-                <a href="/">Back</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 <a href="{% url 'index' %}">Home</a>
             </div>
-        </div>
+        </footer>
 	</main>
     {%block tweet%}
     {%endblock%}

@@ -211,9 +211,16 @@ a {
 	text-decoration: underline;
 }
 
-.tweet_footer_item {
-	
- }
+
+.settings_section {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-style: solid;
+	border-color: LightGrey;
+	border-width: 1px;
+}
 
 .user_list_wrapper {
 	display:flex;
