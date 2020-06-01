@@ -83,21 +83,21 @@
 				<a href="/delete/{{tweet.id}}">Delete</a>
 				{% endif %}
                                 {% if tweet.is_liked_by_current_user %}
-                                        <div class="button like_button" type="submit" value="unlike" name="likebutton" id="likebutton{{tweet.id}}">
+                                        <div class="like_button" type="submit" value="unlike" name="likebutton" id="likebutton{{tweet.id}}">
                                         Unlike
                                         </div>
                                 {% else %}                                    
-                                        <div class="button like_button" type="submit" value="like" name="likebutton" id="likebutton{{tweet.id}}">
+                                        <div class="like_button" type="submit" value="like" name="likebutton" id="likebutton{{tweet.id}}">
                                         Like
                                         </div>
                                 {% endif %}
 				{% if not is_own_profile %}
                                 {% if tweet.is_retweeted_by_current_user %}
-                                        <div class="button retweet_button" type="submit" value="untweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
+                                        <div class="retweet_button" type="submit" value="untweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
                                         Untweet
                                         </div>
                                 {% else %}                                    
-                                    <div class="button retweet_button" type="submit" value="retweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
+                                    <div class="retweet_button" type="submit" value="retweet" name="tweetbutton" id="retweetbutton{{tweet.id}}">
                                         Retweet
                                     </div>
                                 {% endif %}

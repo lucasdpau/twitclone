@@ -339,7 +339,7 @@ def retweet(request, tweet_id):
     elif retweet_or_undo == "retweet":
         print("retweeting", to_be_retweeted )
         current_user_profile.retweets.add(to_be_retweeted)
-        return HttpResponse("Unretweet")
+        return HttpResponse("Untweet")
 
     return HttpResponse("boop")
 
