@@ -36,6 +36,7 @@ class Profile(models.Model):
     following = models.ManyToManyField('Profile', related_name='followed_by')
     is_banned = models.BooleanField(default=False)
     is_shadow_banned = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=False)
     
     
 @receiver(post_save, sender=User)

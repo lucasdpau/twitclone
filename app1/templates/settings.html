@@ -32,14 +32,23 @@
 		<div class="settings_section">
 			<h4>Profile Picture Selection</h4>
  	                <input type="radio" id="default" name="profile_pic" value="default-user-image.png">
-        	        <label for="default">Default Icon</label>
+        	        <label for="default">Default Icon</label><br>
                 	<input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
-	                <label for="green_square">Green Square</label>
+	                <label for="green_square">Green Square</label><br>
         	        <input type="radio" id="red_diamond" name="profile_pic" value="red_diamond.jpg">
-	                <label for="red_diamond">Red Diamond</label>
+	                <label for="red_diamond">Red Diamond</label><br>
                 	<input type="radio" id="blue_circle" name="profile_pic" value="blue_circle.jpg">
-        	        <label for="blue_circle">Blue Circle</label>
+        	        <label for="blue_circle">Blue Circle</label><br>
 		</div>
+		<div class="settings_section">
+		{% if privacy_mode_enabled %}
+                	<input type="checkbox" name="privacy" value="privacy" checked>
+			<br>Privacy mode
+		{% else %}
+                	<input type="checkbox" name="privacy" value="privacy">
+			<br>Privacy mode
+		{% endif %}
+		</div>		
 		<div class="settings_section">
                 	<input type="submit">
 		</div>

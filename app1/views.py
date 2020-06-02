@@ -152,9 +152,11 @@ def settings_view(request):
     profile_location = user_model_object.profile.location
     profile_bio = user_model_object.profile.bio
     profile_date_joined = user_model_object.date_joined
+    privacy_mode_enabled = user_model_object.profile.is_private
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         location_text = request.POST.get("location")
+        privacy_mode = request.POST.get("privacy")
         updated_profile_pic = request.POST.get("profile_pic")
         if bio_text:
             if len(bio_text) <= 300:
@@ -164,6 +166,16 @@ def settings_view(request):
             if len(location_text) <= 60:
                 user_model_object.profile.location = location_text
                 user_model_object.save()
+        if privacy_mode == None:
+            if privacy_mode_enabled:
+                user_model_object.profile.is_private = False
+                user_model_object.save()
+                print("user disabling privacy mode")
+        elif privacy_mode == "privacy":
+            if privacy_mode_enabled == False:
+                user_model_object.profile.is_private = True
+                user_model_object.save()
+                print("user enabling privacy mode")
         if updated_profile_pic:
             user_model_object.profile.profile_pic = updated_profile_pic
             user_model_object.save()
@@ -171,7 +183,8 @@ def settings_view(request):
     
     context = {"current_username":current_username, "profile_url":profile_url, 
 "profile_location": profile_location, "profile_bio": profile_bio, 
-"profile_date_joined": profile_date_joined, "logged_in": True}
+"profile_date_joined": profile_date_joined, "logged_in": True, 
+"privacy_mode_enabled": privacy_mode_enabled, }
 
     return render(request, "settings.html", context)
     
