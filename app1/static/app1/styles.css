@@ -222,6 +222,18 @@ a {
 	border-width: 1px;
 }
 
+.settings_submit {
+	padding: 0.75em;
+	min-width: 200px;
+	background-color: rgb(29, 161, 242);
+	color: white;
+	border-radius: 100px;
+	border-color: rgb(29, 161, 242);
+	border-style: solid;
+	font-weight: bold;
+	text-decoration: none;
+}
+
 .user_list_wrapper {
 	display:flex;
 	flex-wrap: wrap;
