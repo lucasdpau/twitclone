@@ -445,6 +445,13 @@ def like_unlike(request, tweet_id):
 
 def users_view(request):
     current_user = request.user
+    followed_users = []
+    if current_user.is_authenticated:
+        current_user_profile = Profile.objects.get(user__username=current_user.username)
+        followed = Profile.objects.filter(followed_by=current_user_profile).all()
+        for item in followed:
+            followed_users.append(item)
+# if a user is logged in check if there are any followed profiles. we can include them in userlist even if they are private
     all_users = User.objects.all()
     user_list = []
     for item in all_users:
@@ -452,7 +459,9 @@ def users_view(request):
         item.profile.following_count = item.profile.following.count()
 #we don't want to count the deleted tweets
         item.profile.tweet_count = Tweet.objects.filter(author=item).exclude(is_deleted=True).count()
-        user_list.append(item)
+#exclude profiles from showing up if they are private and not in the current user's follow list
+        if not item.profile.is_private or item.profile in followed_users:
+            user_list.append(item)
     json_response = {"userlist":user_list}
     print(json_response)
     return render(request, "users.html", {"user_list": user_list, "logged_in": current_user.is_authenticated, "current_username": current_user.username })

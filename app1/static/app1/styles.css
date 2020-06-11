@@ -67,7 +67,6 @@ a {
 	transition: 0.2s;
 }
 
-
 .register_button_wrapper {
 	margin: 1em;
 }
@@ -88,6 +87,14 @@ a {
 	background-color: rgba(25, 131, 202, 0.9);
 	border-color: rgba(25, 131, 202, 0.9);
 	transition: 0.2s;
+}
+
+.like_button {
+	cursor: pointer;
+}
+
+.retweet_button {
+	cursor: pointer;
 }
 
 .profile_wrapper {
