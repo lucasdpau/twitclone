@@ -270,3 +270,11 @@ a {
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
+#login_forgot_password {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: rgb(29, 161, 242);
+	text-decoration: underline;
+	cursor: pointer;
+}
