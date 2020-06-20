@@ -6,6 +6,7 @@
 header {
 	color: rgb(29, 161, 242);
 	text-align: center;
+	margin: 10px 0px;
 }
 
 header a {
@@ -21,9 +22,11 @@ footer {
 }
 
 textarea {
+	padding: 10px;
 	width: 80%;
 	max-width: 400px;
 	height: 100px;
+	font-size: 16px;
 	resize: none;
 }
 
@@ -42,6 +45,13 @@ a {
 .login_page {
 	padding-top: 50px;
 }
+
+.login_input_field {
+	margin: 10px 0px;
+	padding: 10px 20px;
+	font-size: 18px;
+}
+
 
 .index_wrapper {
 	max-width: 600px;
