@@ -384,7 +384,7 @@ def follow_view(request, profile_name):
 # we return the text "follow" so that the javascript knows what to replace the button label with.
                 return HttpResponse("Follow")
             else:
-                print("not x, so now you follow {}".format(profile_name))
+                print("now you follow {}".format(profile_name))
                 current_user_profile.following.add(user_tobe_followed) 
                 return HttpResponse("Unfollow")
             return HttpResponse("Error")
@@ -477,4 +477,36 @@ def followed_users_view(request):
     context = {"user_list": user_list, "logged_in": current_user.is_authenticated, 
 "current_username": current_user.username, }
     return render(request, "users.html", context)    
+
+
+def feed_view(request):
+    current_user = request.user
+    if not current_user.is_authenticated:
+        return HttpResponse("NotLoggedIn")
+    current_username = request.user.username  
+    current_user_profile = Profile.objects.get(user__username=current_username)
+    tweetlist = []
+    for items in Tweet.objects.all():
+        if not items.is_deleted and items.author.profile in current_user_profile.following.all():
+            tweetlist.append(items)
+    #reverse the list so that the latest tweets are on top
+    tweetlist.reverse()
+    if len(tweetlist) > 5:
+        tweetlist = tweetlist[:5]
+    authenticated_username = request.user.username
+    tweets_liked_by_current_user = Tweet.objects.filter(liked_by=current_user_profile)
+    tweets_retweeted_by_current_user = Tweet.objects.filter(retweeted_by=current_user_profile)
+    for tweet in tweetlist:
+        parse_time(tweet)
+    #package a list of the tweets tags into the tweet object
+        tweet.tag_list = tweet.tags_set.all()
+        if tweet in tweets_liked_by_current_user:
+            tweet.is_liked_by_current_user = True
+        if tweet in tweets_retweeted_by_current_user:
+            tweet.is_retweeted_by_current_user = True
+
+    context = {"tweets": tweetlist, "current_user": current_user, "current_username":current_username, 
+"logged_in": current_user.is_authenticated, "feed": True}
+
+    return render(request, "index.html", context)
 

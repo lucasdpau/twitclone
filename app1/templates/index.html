@@ -1,6 +1,10 @@
 {%extends "basetemplate.html" %}
     {%block title %}
-        <title>Main Page</title>
+	{% if feed %}
+		<title>Your Feed</title>
+	{% else %}
+	        <title>Main Page</title>
+	{% endif %}
     {%endblock%}
     {%block content%}
     {% load static %}

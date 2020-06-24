@@ -19,8 +19,6 @@ class UserTestCase(TestCase):
 class ProfileTestCase(TestCase):
 	def setUp(self):
 		User.objects.create_user('test1', 'test1@test.com', 'q')
-		test_user = User.objects.get(username='test1')
-		test_profile = Profile(user=test_user)
 
 	def test_user_created_properly(self):
 		test_user = User.objects.get(username='test1')
@@ -52,3 +50,54 @@ class MainPageTests(SimpleTestCase):
 	def test_home_page_status_post(self):
 		response = self.client.post('/')
 		self.assertEquals(response.status_code, 200)
+
+
+class YourFeedTests(TestCase):
+	def setUp(self):
+		User.objects.create_user('test1', 'test1@test.com', 'q')
+		followed_user = User.objects.create_user('followed_user', 'follow@test.com', 'q')
+		unfollowed_user = User.objects.create_user('unfollowed_user', 'unfollow@test.com', 'q')
+		followed_tweet = Tweet(text="tweet by followed", author=followed_user)
+		followed_tweet.save()
+		unfollowed_tweet = Tweet(text="you shouldn't see this", author=unfollowed_user)
+		unfollowed_tweet.save()
+
+	
+	def test_follow(self):
+		test_user = User.objects.get(username='test1')
+		test_profile = Profile.objects.get(user__username=test_user.username)
+		followed_user = User.objects.get(username='followed_user')
+		followed_user_profile = Profile.objects.get(user__username=followed_user.username)
+		test_profile.following.add(followed_user_profile)
+		self.assertIn(followed_user_profile, Profile.objects.filter(followed_by=test_profile))
+
+	def test_followed_user_in_feed(self):
+# add followed users, but not the unfollowed one, see if followed user is in profile.following
+		test_user = User.objects.get(username='test1')
+		test_profile = Profile.objects.get(user__username=test_user.username)
+		followed_user = User.objects.get(username='followed_user')
+		followed_user_profile = Profile.objects.get(user__username=followed_user.username)
+		test_profile.following.add(followed_user_profile)
+		
+		followed_user_tweet = Tweet.objects.get(author=followed_user)
+		tweet_list = []
+		for items in Tweet.objects.all():
+			if items.author.profile in test_profile.following.all():
+				tweet_list.append(items)
+		self.assertIn(followed_user_tweet , tweet_list)
+
+	def test_unfollowed_user_not_in_feed(self):
+# add followed users, but not the unfollowed one
+		test_user = User.objects.get(username='test1')
+		test_profile = Profile.objects.get(user__username=test_user.username)
+		followed_user = User.objects.get(username='followed_user')
+		followed_user_profile = Profile.objects.get(user__username=followed_user.username)
+		test_profile.following.add(followed_user_profile)
+		unfollowed_user = User.objects.get(username='unfollowed_user')
+
+		unfollowed_user_tweet = Tweet.objects.get(author=unfollowed_user)
+		tweet_list = []
+		for items in Tweet.objects.all():
+			if items.author.profile in test_profile.following.all():
+				tweet_list.append(items)
+		self.assertNotIn(unfollowed_user_tweet , tweet_list)
