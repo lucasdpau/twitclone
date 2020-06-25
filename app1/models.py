@@ -37,6 +37,7 @@ class Profile(models.Model):
     is_banned = models.BooleanField(default=False)
     is_shadow_banned = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
+    default_page = models.CharField(max_length=20, default="all")
     
     
 @receiver(post_save, sender=User)

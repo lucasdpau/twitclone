@@ -22,15 +22,15 @@
             <form action="settings" method="POST">
                 {% csrf_token %} 
                 <div class="settings_section">     
-		    <label for="bio">Write your bio here! (Max 300 chars)</label>            
+		    <label for="bio">Write your bio (Max 300 chars)</label>            
                     <textarea name="bio" id="bio" placeholder="{{ profile_bio }}"></textarea>
 		</div>
 		<div class="settings_section">       
-                    Location: 
+                    <label for="location">Location: </label>
                     <input type="text" name="location" id="location" placeholder="{{ profile_location }} "> 
                 </div>
 		<div class="settings_section">
-			<h4>Profile Picture Selection</h4>
+			<h4>Profile Picture Selection</h4><br>
  	                <input type="radio" id="default" name="profile_pic" value="default-user-image.png">
         	        <label for="default">Default Icon</label><br>
                 	<input type="radio" id="green_square" name="profile_pic" value="green_square.jpg">
@@ -41,6 +41,14 @@
         	        <label for="blue_circle">Blue Circle</label><br>
 		</div>
 		<div class="settings_section">
+			<h4>Default page on login</h4><br>
+                	<input type="radio" name="default_page" id="default_page_all" value="all">
+			<label for="default_page_all">All Tweets</label>
+			<br>
+			<input type="radio" name="default_page" id="default_page_yourfeed" value="yourfeed">
+			<label for="default_page_yourfeed">Your Feed</label>
+		</div>
+		<div class="settings_section">
 		{% if privacy_mode_enabled %}
                 	<input type="checkbox" name="privacy" value="privacy" checked>
 			<br>Privacy mode
@@ -48,7 +56,7 @@
                 	<input type="checkbox" name="privacy" value="privacy">
 			<br>Privacy mode
 		{% endif %}
-		</div>		
+		</div>	
 		<div class="settings_section">
                 	<input type="submit" class="settings_submit" value="Save Changes">
 		</div>
