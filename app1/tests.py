@@ -1,4 +1,4 @@
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase, SimpleTestCase, Client
 from django.contrib.auth.models import User
 from .models import Tweet, Profile, Tags
 
@@ -51,6 +51,31 @@ class MainPageTests(SimpleTestCase):
 		response = self.client.post('/')
 		self.assertEquals(response.status_code, 200)
 
+class SettingsTests(TestCase):
+	def setUp(self):
+		User.objects.create_user('test', 'test1@test.com', 'q')
+		
+	def test_login_works(self):
+	#login works
+		c = Client()
+		is_logged_in = c.login(username='test', password='q')
+		self.assertEquals(is_logged_in, True)
+
+	def test_default_page(self):
+	#test that if we set default page to yourfeed, we get that page when we log in
+		test_user = User.objects.get(username='test')
+		test_profile = Profile.objects.get(user__username=test_user.username)
+		test_profile.default_page = "yourfeed"
+		test_profile.save()
+		c = Client()
+		response = c.post('/login', {"username":"test", "password":"q"} , follow=True)
+		self.assertContains(response, "<title>Your Feed</title>")
+
+	def test_default_page_is_all(self):
+	#test that by default the user redirects to all posts after login
+		c = Client()
+		response = c.post('/login', {"username":"test", "password":"q"} , follow=True)
+		self.assertNotContains(response, "<title>Your Feed</title>")
 
 class YourFeedTests(TestCase):
 	def setUp(self):

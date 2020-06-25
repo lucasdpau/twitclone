@@ -92,10 +92,16 @@ def login_view(request):  #if we name this function 'login', it will be the same
         username = request.POST.get("username").lower()
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user:
             login(request, user) #Django has built in logout and login functions, so we dont have to code it manually like in flask
-            return HttpResponseRedirect(reverse("index"))  # reverses the urlname back to url, so that from the name index we get the url.
+            user_profile_object = Profile.objects.get(user__username=username)
+            if user_profile_object.default_page == "yourfeed":
+                return HttpResponseRedirect("yourfeed")
+            elif user_profile_object.default_page == "all":
+            	return HttpResponseRedirect(reverse("index"))  # reverses the urlname back to url, so that from the name index we get the url.
+            else:
+                print("user profile's default page set to invalid value")
+                return HttpResponseRedirect(reverse("index"))
         
         else:
             return render(request, "login.html", {"message": "Invalid credentials."})
@@ -158,6 +164,7 @@ def settings_view(request):
         location_text = request.POST.get("location")
         privacy_mode = request.POST.get("privacy")
         updated_profile_pic = request.POST.get("profile_pic")
+        default_page = request.POST.get("default_page")
         if bio_text:
             if len(bio_text) <= 300:
                 user_model_object.profile.bio = bio_text
@@ -178,6 +185,9 @@ def settings_view(request):
                 print("user enabling privacy mode")
         if updated_profile_pic:
             user_model_object.profile.profile_pic = updated_profile_pic
+            user_model_object.save()
+        if default_page:
+            user_model_object.profile.default_page = default_page
             user_model_object.save()
         return HttpResponseRedirect("settings")
     
