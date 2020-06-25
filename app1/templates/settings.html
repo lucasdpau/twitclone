@@ -23,11 +23,11 @@
                 {% csrf_token %} 
                 <div class="settings_section">     
 		    <label for="bio">Write your bio (Max 300 chars)</label>            
-                    <textarea name="bio" id="bio" placeholder="{{ profile_bio }}"></textarea>
+                    <textarea name="bio" id="bio" placeholder="{{ profile.bio }}"></textarea>
 		</div>
 		<div class="settings_section">       
                     <label for="location">Location: </label>
-                    <input type="text" name="location" id="location" placeholder="{{ profile_location }} "> 
+                    <input type="text" name="location" id="location" placeholder="{{ profile.location }} "> 
                 </div>
 		<div class="settings_section">
 			<h4>Profile Picture Selection</h4><br>
@@ -41,9 +41,10 @@
         	        <label for="blue_circle">Blue Circle</label><br>
 		</div>
 		<div class="settings_section">
-			<h4>Default page on login</h4><br>
+			<h4>Default page on login</h4>
+			<p>Current default page is {{ profile.default_page }}</p><br>
                 	<input type="radio" name="default_page" id="default_page_all" value="all">
-			<label for="default_page_all">All Tweets</label>
+			<label for="default_page_all">All</label>
 			<br>
 			<input type="radio" name="default_page" id="default_page_yourfeed" value="yourfeed">
 			<label for="default_page_yourfeed">Your Feed</label>

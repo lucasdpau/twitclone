@@ -153,10 +153,9 @@ def register(request):
 def settings_view(request):
     current_username = request.user.username
     user_model_object = User.objects.get(username=current_username)
+    user_profile_object = user_model_object.profile
     profile_pic = user_model_object.profile.profile_pic
     profile_url = "app1/" + profile_pic
-    profile_location = user_model_object.profile.location
-    profile_bio = user_model_object.profile.bio
     profile_date_joined = user_model_object.date_joined
     privacy_mode_enabled = user_model_object.profile.is_private
     if request.method == "POST":
@@ -191,8 +190,7 @@ def settings_view(request):
             user_model_object.save()
         return HttpResponseRedirect("settings")
     
-    context = {"current_username":current_username, "profile_url":profile_url, 
-"profile_location": profile_location, "profile_bio": profile_bio, 
+    context = {"current_username":current_username, "profile_url":profile_url, "profile": user_profile_object,
 "profile_date_joined": profile_date_joined, "logged_in": True, 
 "privacy_mode_enabled": privacy_mode_enabled, }
 
