@@ -4,6 +4,9 @@
         {% load static %}
 	<meta name="viewport" content="width=device-width,initial-scale=1">
         <link rel="stylesheet" type="text/css" href="{% static 'app1/styles.css' %}">
+        {% if logged_in and current_user.profile.dark_mode %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app1/darkmode.css' %}">
+        {% endif %}
 	<link rel="icon" href="{% static 'app1/favicon.ico' %}" type="image/x-icon" />
         {%block title%}
         {%endblock%}

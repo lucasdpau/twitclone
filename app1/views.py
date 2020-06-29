@@ -158,12 +158,14 @@ def settings_view(request):
     profile_url = "app1/" + profile_pic
     profile_date_joined = user_model_object.date_joined
     privacy_mode_enabled = user_model_object.profile.is_private
+    dark_mode_enabled = user_model_object.profile.dark_mode
     if request.method == "POST":
         bio_text = request.POST.get("bio")
         location_text = request.POST.get("location")
         privacy_mode = request.POST.get("privacy")
         updated_profile_pic = request.POST.get("profile_pic")
         default_page = request.POST.get("default_page")
+        dark_mode = request.POST.get("dark_mode")
         if bio_text:
             if len(bio_text) <= 300:
                 user_model_object.profile.bio = bio_text
@@ -172,6 +174,14 @@ def settings_view(request):
             if len(location_text) <= 60:
                 user_model_object.profile.location = location_text
                 user_model_object.save()
+        if dark_mode == "true":
+            user_model_object.profile.dark_mode = True
+            user_model_object.save()
+            print("user enabling dark mode")
+        elif dark_mode != "true":
+            user_model_object.profile.dark_mode = False
+            user_model_object.save()
+            print("user disabling dark mode")
         if privacy_mode == None:
             if privacy_mode_enabled:
                 user_model_object.profile.is_private = False
@@ -191,8 +201,8 @@ def settings_view(request):
         return HttpResponseRedirect("settings")
     
     context = {"current_username":current_username, "profile_url":profile_url, "profile": user_profile_object,
-"profile_date_joined": profile_date_joined, "logged_in": True, 
-"privacy_mode_enabled": privacy_mode_enabled, }
+"profile_date_joined": profile_date_joined, "logged_in": True, "current_user": request.user,
+"privacy_mode_enabled": privacy_mode_enabled, "dark_mode_enabled":dark_mode_enabled }
 
     return render(request, "settings.html", context)
     
@@ -309,7 +319,7 @@ def tweet_view(request, tweet_id):   # tweet_id from path <int:tweet_id> in urls
     parse_time(tweet)
     context = {"current_username": current_username, "tweet":tweet, 
 "tweet_text": tweet.text, "child_tweets": child_tweets, "parent_tweet": parent_tweet, 
-"tweet_id":tweet_id, "logged_in": current_user.is_authenticated,}
+"tweet_id":tweet_id, "logged_in": current_user.is_authenticated, "current_user":current_user,}
 
     return render(request, "tweet.html", context) 
 
@@ -372,7 +382,7 @@ def liked_tweet_view(request, profile_name):
         tweet.tag_list = tweet.tags_set.all()
 
     context = { "posts": tweets_liked_by_profile, "current_username": current_user.username, 
-"logged_in": current_user.is_authenticated, }
+"logged_in": current_user.is_authenticated,  "current_user": current_user}
 
     return render(request, "tweetlist.html", context)
 
@@ -472,7 +482,8 @@ def users_view(request):
             user_list.append(item)
     json_response = {"userlist":user_list}
     print(json_response)
-    return render(request, "users.html", {"user_list": user_list, "logged_in": current_user.is_authenticated, "current_username": current_user.username })
+    return render(request, "users.html", {"user_list": user_list, "current_user": current_user,
+     "logged_in": current_user.is_authenticated, "current_username": current_user.username })
 
 @login_required
 def followed_users_view(request):
@@ -483,7 +494,7 @@ def followed_users_view(request):
     for item in followed_users:
         user_list.append(item)
     context = {"user_list": user_list, "logged_in": current_user.is_authenticated, 
-"current_username": current_user.username, }
+"current_username": current_user.username,  "current_user": current_user, }
     return render(request, "users.html", context)    
 
 

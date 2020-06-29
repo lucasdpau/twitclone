@@ -50,6 +50,16 @@
 			<label for="default_page_yourfeed">Your Feed</label>
 		</div>
 		<div class="settings_section">
+			<h4>Dark mode?</h4>
+			<p>Currently Dark mode is {{ profile.dark_mode }}</p><br>
+			{% if dark_mode_enabled %}
+			<input type="checkbox" name="dark_mode" id="dark_mode" value="true" checked>
+			{% else %}
+			<input type="checkbox" name="dark_mode" id="dark_mode" value="true">
+			{% endif %}
+			<label for="dark_mode">Dark Mode</label>
+		</div>
+		<div class="settings_section">
 		{% if privacy_mode_enabled %}
                 	<input type="checkbox" name="privacy" value="privacy" checked>
 			<br>Privacy mode

@@ -34,6 +34,7 @@ class Profile(models.Model):
     liked_tweets = models.ManyToManyField(Tweet, related_name="liked_by")
     retweets = models.ManyToManyField(Tweet, related_name="retweeted_by")
     following = models.ManyToManyField('Profile', related_name='followed_by')
+    dark_mode = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
     is_shadow_banned = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
