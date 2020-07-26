@@ -18,24 +18,33 @@
             <div>
                 <form id="login_form" action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-		    <div>
-			<div>
-                            <label for="username">Username</label><br>
-			    <input type="text" name="username" id="username" class="login_input_field">
-			</div>
-			<div>
-                            <label for="password">Password</label><br>
-			    <input type="password" name="password" id="password" class="login_input_field">
-			</div>
-			<div id="login_forgot_password">
-               			Don't want to register?
-			</div>
-			<div>
-	                	<input class="button" type="submit" value="Log in">
-			</div>
-			<div class="register_button_wrapper">
-				<a class="register_button" href="{% url 'register' %}">Register!</a>
-			</div>
+                    <div>
+                        <div>
+                                        <label for="username">Username</label><br>
+                            <input type="text" name="username" id="username" class="login_input_field">
+                        </div>
+                        <div>
+                                        <label for="password">Password</label><br>
+                            <input type="password" name="password" id="password" class="login_input_field">
+                        </div>
+                        <div>
+                                    <input class="button" type="submit" value="Log in">
+                        </div>
+                        <div class="register_button_wrapper">
+                            <a class="register_button" href="{% url 'register' %}">Register!</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form id="login_form" action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="hidden">
+                        <input type="text" name="username" value="demo">
+                        <input type="password" name="password" value="demo">
+                    </div>
+                    <div>
+                        <input class="button demo_button" type="submit" value="Login to demo account">
                     </div>
                 </form>
             </div>
@@ -48,5 +57,4 @@
             
         </div>
     </body>
-<script src="{% static 'app1/login.js' %}"></script>
 </html>
